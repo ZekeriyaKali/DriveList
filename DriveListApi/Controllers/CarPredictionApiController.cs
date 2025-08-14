@@ -7,12 +7,12 @@ namespace DriveListApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PredictionController : ControllerBase
+    public class CarPredictionApiController : ControllerBase
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly AppDbContext _db;
 
-        public PredictionController(IHttpClientFactory httpClientFactory, AppDbContext db)
+        public CarPredictionApiController(IHttpClientFactory httpClientFactory, AppDbContext db)
         {
             _httpClientFactory = httpClientFactory;
             _db = db;

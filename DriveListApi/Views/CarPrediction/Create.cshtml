@@ -1,0 +1,39 @@
+﻿@model DriveListApi.Models.CarRequest
+@{
+    ViewData["Title"] = "Araç Tahmini";
+}
+
+<div class="container mt-4">
+    <h2>Araç Fiyat Tahmini</h2>
+    <form method="post">
+        <div class="mb-3">
+            <label class="form-label">Marka</label>
+            <input asp-for="Brand" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Model</label>
+            <input asp-for="Model" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Yıl</label>
+            <input asp-for="Year" class="form-control" type="number" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Kilometre</label>
+            <input asp-for="Km" class="form-control" type="number" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Vites Tipi</label>
+            <input asp-for="GearType" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Yakıt Tipi</label>
+            <input asp-for="FuelType" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Şehir</label>
+            <input asp-for="City" class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-primary">Tahmin Et</button>
+    </form>
+</div>
