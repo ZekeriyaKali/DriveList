@@ -3,37 +3,92 @@
     ViewData["Title"] = "Araç Tahmini";
 }
 
-<div class="container mt-4">
-    <h2>Araç Fiyat Tahmini</h2>
-    <form method="post">
-        <div class="mb-3">
-            <label class="form-label">Marka</label>
-            <input asp-for="Brand" class="form-control" />
+<div class="d-flex justify-content-center align-items-center vh-100">
+    <div class="card shadow-lg border-0 rounded-4 p-4" style="max-width: 700px; width: 100%;">
+        <div class="card-header bg-dark text-white text-center py-4 rounded-top-4">
+            <h2 class="mb-0">🚗 Araç Fiyat Tahmini</h2>
+            <small class="text-light">Lütfen bilgileri eksiksiz giriniz</small>
         </div>
-        <div class="mb-3">
-            <label class="form-label">Model</label>
-            <input asp-for="Model" class="form-control" />
+        <div class="card-body">
+            <form method="post" id="carForm">
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Marka</label>
+                        <input asp-for="Brand" class="form-control form-control-lg rounded-3" placeholder="Örn: Toyota" required />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Model</label>
+                        <input asp-for="Model" class="form-control form-control-lg rounded-3" placeholder="Örn: Corolla" required />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Yıl</label>
+                        <input asp-for="Year" class="form-control form-control-lg rounded-3" type="number" min="1980" max="2025" required />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Kilometre</label>
+                        <input asp-for="Km" class="form-control form-control-lg rounded-3" type="number" placeholder="90000" required />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Şehir</label>
+                        <input asp-for="City" class="form-control form-control-lg rounded-3" placeholder="Örn: Ankara" required />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Vites Tipi</label>
+                        <select asp-for="GearType" class="form-select form-select-lg rounded-3" required>
+                            <option value="">Seçiniz...</option>
+                            <option>Manuel</option>
+                            <option>Otomatik</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Yakıt Tipi</label>
+                        <select asp-for="FuelType" class="form-select form-select-lg rounded-3" required>
+                            <option value="">Seçiniz...</option>
+                            <option>Benzin</option>
+                            <option>Dizel</option>
+                            <option>Hybrid</option>
+                            <option>Elektrik</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="d-grid mt-5">
+                    <button type="submit" class="btn btn-lg btn-primary rounded-3 shadow-sm">
+                        🚀 Tahmin Et
+                    </button>
+                </div>
+            </form>
         </div>
-        <div class="mb-3">
-            <label class="form-label">Yıl</label>
-            <input asp-for="Year" class="form-control" type="number" />
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Kilometre</label>
-            <input asp-for="Km" class="form-control" type="number" />
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Vites Tipi</label>
-            <input asp-for="GearType" class="form-control" />
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Yakıt Tipi</label>
-            <input asp-for="FuelType" class="form-control" />
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Şehir</label>
-            <input asp-for="City" class="form-control" />
-        </div>
-        <button type="submit" class="btn btn-primary">Tahmin Et</button>
-    </form>
+    </div>
 </div>
+
+@section Scripts {
+    <script>
+        // Submit buton animasyonu
+        document.getElementById("carForm").addEventListener("submit", function (e) {
+            const btn = e.target.querySelector("button[type='submit']");
+            btn.disabled = true;
+            btn.innerHTML = "⏳ Tahmin Ediliyor...";
+        });
+    </script>
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .card {
+            transition: transform 0.2s ease-in-out;
+        }
+
+            .card:hover {
+                transform: translateY(-5px);
+            }
+
+        label {
+            font-size: 1.1rem;
+            color: #495057;
+        }
+    </style>
+}
