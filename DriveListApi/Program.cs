@@ -11,9 +11,6 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 builder.Services.AddHttpClient();  // Flask API çaðrýsý için
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-//builder.Services.AddEndpointsApiExplorer();
-//builder.Services.AddSwaggerGen();
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
@@ -30,12 +27,6 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=CarPrediction}/{action=Create}/{id?}"
 );
-// Configure the HTTP request pipeline.
-/*if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}*/
 
 
 app.MapControllers();
