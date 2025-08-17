@@ -23,6 +23,8 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
+app.UseSession(); 
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=CarPrediction}/{action=Create}/{id?}"
