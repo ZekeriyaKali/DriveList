@@ -11,6 +11,6 @@
         public string FuelType { get; set; }
         public string City { get; set; }
         public double PredictedPrice { get; set; }
-        public DateTime CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
     }
 }
