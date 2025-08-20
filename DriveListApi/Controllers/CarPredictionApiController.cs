@@ -7,9 +7,9 @@ namespace DriveListApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CarPredictionApiController : ControllerBase
+    public class CarPredictionApiController : ControllerBase //diğer dış istemciler için json/api sağlar. makine ve entegrasyonlar için controller
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IHttpClientFactory _httpClientFactory; 
         private readonly AppDbContext _db;
 
         public CarPredictionApiController(IHttpClientFactory httpClientFactory, AppDbContext db)
@@ -19,7 +19,7 @@ namespace DriveListApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Predict([FromBody] CarRequest request)
+        public async Task<IActionResult> Predict([FromBody] CarRequest request)  //json da body den carrequest verileri 
         {
             var client = _httpClientFactory.CreateClient();
             var flaskResponse = await client.PostAsJsonAsync("http://localhost:5000/predict", request);
