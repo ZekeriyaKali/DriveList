@@ -32,16 +32,21 @@ namespace DriveListApi.Controllers
 
             var prediction = await response.Content.ReadFromJsonAsync<PredictionResponse>();
 
-            ViewBag.Brand = request.Brand;
-            ViewBag.Model = request.Model;
-            ViewBag.Year = request.Year;
-            ViewBag.Km = request.Km;
-            ViewBag.GearType = request.GearType;
-            ViewBag.FuelType = request.FuelType;
-            ViewBag.City = request.City;
-            ViewBag.PredictedPrice = prediction.PricePrediction;
 
-            return View("Result", prediction);
+            var vm = new PredictionViewModel
+            {
+                Brand = request.Brand,
+                Model = request.Model,
+                Year = request.Year,
+                Km = request.Km,
+                GearType = request.GearType,
+                FuelType = request.FuelType,
+                City = request.City,
+                PredictedPrice = prediction.PricePrediction
+            };
+
+
+            return View("Result", vm);
         }
     }
 }

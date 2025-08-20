@@ -2,6 +2,8 @@
     ViewData["Title"] = "Tahmin Sonucu";
 }
 
+@model PredictionViewModel
+
 <div class="container my-5">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -16,19 +18,19 @@
                     <!-- Girilen Bilgiler -->
                     <h5 class="text-muted mb-3">Girilen Bilgiler</h5>
                     <ul class="list-group mb-4">
-                        <li class="list-group-item"><strong>Marka:</strong> @ViewBag.Brand</li>
-                        <li class="list-group-item"><strong>Model:</strong> @ViewBag.Model</li>
-                        <li class="list-group-item"><strong>Yıl:</strong> @ViewBag.Year</li>
-                        <li class="list-group-item"><strong>Kilometre:</strong> @ViewBag.Km</li>
-                        <li class="list-group-item"><strong>Vites:</strong> @ViewBag.GearType</li>
-                        <li class="list-group-item"><strong>Yakıt:</strong> @ViewBag.FuelType</li>
-                        <li class="list-group-item"><strong>Şehir:</strong> @ViewBag.City</li>
+                        <li class="list-group-item"><strong>Marka:</strong> @Model.Brand</li>
+                        <li class="list-group-item"><strong>Model:</strong> @Model.Model</li>
+                        <li class="list-group-item"><strong>Yıl:</strong> @Model.Year</li>
+                        <li class="list-group-item"><strong>Kilometre:</strong> @Model.Km</li>
+                        <li class="list-group-item"><strong>Vites:</strong> @Model.GearType</li>
+                        <li class="list-group-item"><strong>Yakıt:</strong> @Model.FuelType</li>
+                        <li class="list-group-item"><strong>Şehir:</strong> @Model.City</li>
                     </ul>
 
                     <!-- Tahmin -->
                     <div class="alert alert-success text-center fs-5 shadow-sm">
-                        <strong>@ViewBag.Brand @ViewBag.Model</strong> Aracınızın Tahmini Piyasa Fiyatı:
-                        <span class="fw-bold text-dark">@String.Format("{0:N0}", ViewBag.PredictedPrice) ₺</span>
+                        <strong>@Model.Brand @Model.Model</strong> Aracınızın Tahmini Piyasa Fiyatı:
+                        <span class="fw-bold text-dark">@String.Format("{0:N0}", Model.PredictedPrice) ₺</span>
                     </div>
                 </div>
 
