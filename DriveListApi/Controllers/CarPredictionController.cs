@@ -31,7 +31,7 @@ namespace DriveListApi.Controllers
             }
 
             var prediction = await response.Content.ReadFromJsonAsync<PredictionResponse>();
-            ViewBag.Result = prediction.PricePrediction;
+            ViewBag.PredictedPrice = prediction.PricePrediction;
 
             return View("Result", prediction);
         }
