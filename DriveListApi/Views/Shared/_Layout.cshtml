@@ -16,11 +16,28 @@
 
 </head>
 <body>
-    <header class="bg-dark text-white p-3 shadow-sm">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
         <div class="container">
-            <h1 class="h3">🚗 Araç Tahmini Uygulaması</h1>
+            <a class="navbar-brand fw-bold" href="/">Drive AI</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Home" asp-action="Index">Anasayfa</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="CarPrediction" asp-action="Create">Fiyat Tahmini</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Arıza Teşhisi (Yakında)</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-    </header>
+    </nav>
 
     <main role="main" class="pb-3">
         <div class="container">

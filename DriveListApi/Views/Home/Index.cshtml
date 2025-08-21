@@ -1,0 +1,29 @@
+﻿@{
+    ViewData["Title"] = "Anasayfa";
+}
+
+<div class="text-center my-5">
+    <h1 class="display-4 fw-bold">🚗 Drive AI</h1>
+    <p class="lead">Araç fiyat tahmini ve otomobil sorunları için yapay zeka destekli çözüm</p>
+</div>
+
+<div class="row text-center mt-5">
+    <div class="col-md-6 mb-4">
+        <div class="card shadow border-0 h-100">
+            <div class="card-body">
+                <h3 class="card-title">💰 Araç Fiyat Tahmini</h3>
+                <p class="card-text">Aracınızın marka, model, yıl ve km bilgilerini girerek piyasa değerini öğrenin.</p>
+                <a asp-controller="CarPrediction" asp-action="Create" class="btn btn-primary">Fiyat Tahmini Yap</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 mb-4">
+        <div class="card shadow border-0 h-100">
+            <div class="card-body">
+                <h3 class="card-title">🔧 Arıza Teşhisi (Yakında)</h3>
+                <p class="card-text">Yapay zekaya aracınızın sorunlarını anlatın, olası nedenleri öğrenin.</p>
+                <a href="#" class="btn btn-outline-secondary disabled">Yakında</a>
+            </div>
+        </div>
+    </div>
+</div>
