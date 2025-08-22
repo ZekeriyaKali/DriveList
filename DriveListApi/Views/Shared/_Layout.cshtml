@@ -22,34 +22,42 @@
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
-        <div class="container">
-            <a class="navbar-brand fw-bold" href="/">Drive AI</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" asp-controller="Home" asp-action="Index">Anasayfa</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-controller="CarPrediction" asp-action="Create">Fiyat Tahmini</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Arıza Teşhisi (Yakında)</a>
-                    </li>
-                </ul>
+        ...
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <!-- sol menü -->
+                <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index">Anasayfa</a></li>
+                <li class="nav-item"><a class="nav-link" asp-controller="CarPrediction" asp-action="Create">Fiyat Tahmini</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Arıza Teşhisi (Yakında)</a></li>
+            </ul>
 
-                <!-- Sağ menü (Oturum Aç / Kaydol) -->
-                <ul class="navbar-nav">
+            <ul class="navbar-nav">
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            Merhaba, @User.Identity?.Name
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">Profil</a></li>
+                            <li>
+                                <form method="post" asp-area="Identity" asp-page="/Account/Logout" class="px-3 py-1">
+                                    <button type="submit" class="btn btn-link p-0">Çıkış Yap</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                }
+                else
+                {
                     <li class="nav-item">
-                        <a class="btn btn-outline-light me-2" asp-controller="Auth" asp-action="Login">Oturum Aç</a>
+                        <a class="btn btn-outline-light me-2" asp-area="Identity" asp-page="/Account/Login">Oturum Aç</a>
                     </li>
                     <li class="nav-item">
-                        <a class="btn btn-primary" asp-controller="Auth" asp-action="Register">Kaydol</a>
+                        <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Register">Kaydol</a>
                     </li>
-                </ul>
-            </div>
+                }
+            </ul>
         </div>
     </nav>
 
