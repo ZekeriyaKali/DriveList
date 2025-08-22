@@ -1,4 +1,6 @@
 using DriveListApi.Data;
+using DriveListApi.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,11 +10,27 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+{
+    options.SignIn.RequireConfirmedAccount = false;  // e-posta onayý zorunlu olmasýn (isteðe baðlý)
+    // Parola kurallarý gibi ayarlar...
+    // options.Password.RequireNonAlphanumeric = false;
+})
+.AddEntityFrameworkStores<AppDbContext>()
+.AddDefaultTokenProviders()
+.AddDefaultUI(); // Default Razor UI (Login/Register sayfalarý)
+
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 builder.Services.AddHttpClient();  // Flask API çaðrýsý için
 builder.Services.AddControllers();
 builder.Services.AddControllersWithViews();
-builder.Services.AddSession();
+// (Ýsteðe baðlý) Session — kýsa ömürlü UI verileri için
+builder.Services.AddSession(o =>
+{
+    o.IdleTimeout = TimeSpan.FromMinutes(20);
+    o.Cookie.HttpOnly = true;
+    o.Cookie.IsEssential = true;
+});
 
 var app = builder.Build();
 
@@ -24,13 +42,16 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
-app.UseSession(); 
+app.UseSession();           // Session kullanacaksan
+app.UseAuthentication();    // Identity için þart
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}"
 );
 
+// Default Identity UI endpoint’leri (Login/Register) için:
+app.MapRazorPages();
 
 app.MapControllers();
 
