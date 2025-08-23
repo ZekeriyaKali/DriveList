@@ -39,9 +39,9 @@
                             Merhaba, @User.Identity?.Name
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">Profil</a></li>
+                            <li><a class="dropdown-item" asp-controller="Account" asp-action="Manage">Profil</a></li>
                             <li>
-                                <form method="post" asp-area="Identity" asp-page="/Account/Logout" class="px-3 py-1">
+                                <form asp-controller="Account" asp-action="Logout" method="post" class="px-3 py-1">
                                     <button type="submit" class="btn btn-link p-0">Çıkış Yap</button>
                                 </form>
                             </li>
@@ -51,10 +51,10 @@
                 else
                 {
                     <li class="nav-item">
-                        <a class="btn btn-outline-light me-2" asp-area="Identity" asp-page="/Account/Login">Oturum Aç</a>
+                        <a class="btn btn-outline-light me-2" asp-controller="Account" asp-action="Login">Oturum Aç</a>
                     </li>
                     <li class="nav-item">
-                        <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Register">Kaydol</a>
+                        <a class="btn btn-primary" asp-controller="Account" asp-action="Register">Kaydol</a>
                     </li>
                 }
             </ul>
