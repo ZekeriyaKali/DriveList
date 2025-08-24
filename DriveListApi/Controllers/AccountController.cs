@@ -20,7 +20,7 @@ namespace DriveListApi.Controllers
         public IActionResult Register() => View();
 
         // POST: Register
-        [HttpPost]
+        /*[HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
@@ -58,6 +58,53 @@ namespace DriveListApi.Controllers
 
                 ModelState.AddModelError("", "Geçersiz giriş denemesi.");
             }
+            return View(model);
+        }*/
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginViewModel model, string? returnUrl = null)
+        {
+            if (!ModelState.IsValid) return View(model);
+
+            var user = await _userManager.FindByNameAsync(model.Username);
+            if (user == null)
+            {
+                ModelState.AddModelError(string.Empty, "Kullanıcı adı veya şifre hatalı.");
+                return View(model);
+            }
+
+            var result = await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, lockoutOnFailure: false);
+            if (result.Succeeded)
+            {
+                return !string.IsNullOrEmpty(returnUrl) ? LocalRedirect(returnUrl) : RedirectToAction("Index", "Home");
+            }
+
+            ModelState.AddModelError(string.Empty, "Kullanıcı adı veya şifre hatalı.");
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(RegisterViewModel model)
+        {
+            if (!ModelState.IsValid) return View(model);
+
+            var user = new ApplicationUser
+            {
+                UserName = model.Username,
+                Email = model.Email
+            };
+            var result = await _userManager.CreateAsync(user, model.Password);
+
+            if (result.Succeeded)
+            {
+                await _signInManager.SignInAsync(user, isPersistent: false);
+                return RedirectToAction("Index", "Home");
+            }
+            foreach (var error in result.Errors)
+                ModelState.AddModelError(string.Empty, error.Description);
+
             return View(model);
         }
 
