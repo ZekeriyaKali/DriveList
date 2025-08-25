@@ -1,0 +1,32 @@
+﻿@{
+    ViewData["Title"] = "Arıza Teşhisi";
+}
+
+<h2>Arıza Teşhisi</h2>
+
+<form asp-action="Create" asp-controller="Diagnosis" method="post" enctype="multipart/form-data" class="p-3 border rounded shadow-sm">
+    <div class="mb-3">
+        <label for="description" class="form-label">Arızayı Açıklayın (Metin)</label>
+        <textarea name="description" class="form-control" rows="3"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label for="audio" class="form-label">Ses Dosyası (opsiyonel)</label>
+        <input type="file" name="audio" class="form-control" accept="audio/*" />
+    </div>
+
+    <div class="mb-3">
+        <label for="image" class="form-label">Resim (opsiyonel)</label>
+        <input type="file" name="image" class="form-control" accept="image/*" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Gönder</button>
+</form>
+
+@if (ViewBag.Result != null)
+{
+    <div class="alert alert-info mt-3">
+        <strong>Sonuç:</strong>
+        <pre>@ViewBag.Result</pre>
+    </div>
+}
