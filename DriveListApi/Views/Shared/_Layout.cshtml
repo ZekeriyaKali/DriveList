@@ -25,42 +25,83 @@
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
-        ...
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav me-auto">
-                <!-- sol menü -->
-                <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index">Anasayfa</a></li>
-                <li class="nav-item"><a class="nav-link" asp-controller="CarPrediction" asp-action="Create">Fiyat Tahmini</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Arıza Teşhisi (Yakında)</a></li>
-            </ul>
+        <div class="container-fluid">
+            <!-- Logo -->
+            <a class="navbar-brand fw-bold" asp-controller="Home" asp-action="Index">
+                🚗 Araç Tahmin
+            </a>
 
-            <ul class="navbar-nav">
-                @if (SignInManager.IsSignedIn(User))
-                {
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                            Merhaba, @User.Identity?.Name
+            <!-- Mobile Menu Button -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Menü -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <!-- Sol Menü -->
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Home" asp-action="Index">
+                            <i class="bi bi-house-door"></i> Anasayfa
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" asp-controller="Account" asp-action="Manage">Profil</a></li>
-                            <li>
-                                <form asp-controller="Account" asp-action="Logout" method="post" class="px-3 py-1">
-                                    <button type="submit" class="btn btn-link p-0">Çıkış Yap</button>
-                                </form>
-                            </li>
-                        </ul>
-                    </li>
-                }
-                else
-                {
-                    <li class="nav-item">
-                        <a class="btn btn-outline-light me-2" asp-controller="Account" asp-action="Login">Oturum Aç</a>
                     </li>
                     <li class="nav-item">
-                        <a class="btn btn-primary" asp-controller="Account" asp-action="Register">Kaydol</a>
+                        <a class="nav-link" asp-controller="CarPrediction" asp-action="Create">
+                            <i class="bi bi-graph-up"></i> Fiyat Tahmini
+                        </a>
                     </li>
-                }
-            </ul>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="#">
+                            <i class="bi bi-tools"></i> Arıza Teşhisi (Yakında)
+                        </a>
+                    </li>
+                </ul>
+
+                <!-- Sağ Menü (Oturum / Profil) -->
+                <ul class="navbar-nav">
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
+                                <!-- Avatar -->
+                                <img src="https://ui-avatars.com/api/?name=@User.Identity?.Name&background=0D6EFD&color=fff&size=32"
+                                     class="rounded-circle me-2" width="32" height="32" alt="Avatar" />
+                                <span>Merhaba, <strong>@User.Identity?.Name</strong></span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end shadow">
+                                <li>
+                                    <a class="dropdown-item" asp-controller="Account" asp-action="Manage">
+                                        <i class="bi bi-person-circle"></i> Profilim
+                                    </a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider" />
+                                </li>
+                                <li>
+                                    <form asp-controller="Account" asp-action="Logout" method="post" class="px-3 py-1">
+                                        <button type="submit" class="btn btn-danger w-100">
+                                            <i class="bi bi-box-arrow-right"></i> Çıkış Yap
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item me-2">
+                            <a class="btn btn-outline-light" asp-controller="Account" asp-action="Login">
+                                <i class="bi bi-box-arrow-in-right"></i> Oturum Aç
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-primary" asp-controller="Account" asp-action="Register">
+                                <i class="bi bi-person-plus"></i> Kaydol
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
         </div>
     </nav>
 
