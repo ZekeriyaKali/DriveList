@@ -2,31 +2,63 @@
     ViewData["Title"] = "Arıza Teşhisi";
 }
 
-<h2>Arıza Teşhisi</h2>
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <!-- Başlık -->
+            <div class="text-center mb-4">
+                <h2 class="fw-bold text-primary">
+                    <i class="bi bi-tools"></i> Arıza Teşhisi
+                </h2>
+                <p class="text-muted">Aracınızdaki sorunu metin, ses veya resim ile bize iletin</p>
+            </div>
 
-<form asp-action="Create" asp-controller="Diagnosis" method="post" enctype="multipart/form-data" class="p-3 border rounded shadow-sm">
-    <div class="mb-3">
-        <label for="description" class="form-label">Arızayı Açıklayın (Metin)</label>
-        <textarea name="description" class="form-control" rows="3"></textarea>
+            <!-- Form Kartı -->
+            <div class="card shadow-lg border-0 rounded-3">
+                <div class="card-body p-4">
+                    <form asp-action="Create" asp-controller="Diagnosis" method="post" enctype="multipart/form-data">
+                        <!-- Metin Alanı -->
+                        <div class="mb-3">
+                            <label for="description" class="form-label fw-semibold">
+                                <i class="bi bi-pencil-square"></i> Arızayı Açıklayın
+                            </label>
+                            <textarea name="description" class="form-control" rows="3" placeholder="Örn: Motor çalışırken garip ses geliyor..."></textarea>
+                        </div>
+
+                        <!-- Ses Dosyası -->
+                        <div class="mb-3">
+                            <label for="audio" class="form-label fw-semibold">
+                                <i class="bi bi-mic-fill text-danger"></i> Ses Dosyası (opsiyonel)
+                            </label>
+                            <input type="file" name="audio" class="form-control" accept="audio/*" />
+                        </div>
+
+                        <!-- Resim Dosyası -->
+                        <div class="mb-3">
+                            <label for="image" class="form-label fw-semibold">
+                                <i class="bi bi-image-fill text-success"></i> Resim (opsiyonel)
+                            </label>
+                            <input type="file" name="image" class="form-control" accept="image/*" />
+                        </div>
+
+                        <!-- Buton -->
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg shadow-sm">
+                                <i class="bi bi-send-fill"></i> Gönder
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Sonuç Gösterimi -->
+            @if (ViewBag.Result != null)
+            {
+                <div class="alert alert-info mt-4 shadow-sm">
+                    <h5 class="fw-bold"><i class="bi bi-check-circle-fill"></i> Sonuç:</h5>
+                    <pre class="mb-0">@ViewBag.Result</pre>
+                </div>
+            }
+        </div>
     </div>
-
-    <div class="mb-3">
-        <label for="audio" class="form-label">Ses Dosyası (opsiyonel)</label>
-        <input type="file" name="audio" class="form-control" accept="audio/*" />
-    </div>
-
-    <div class="mb-3">
-        <label for="image" class="form-label">Resim (opsiyonel)</label>
-        <input type="file" name="image" class="form-control" accept="image/*" />
-    </div>
-
-    <button type="submit" class="btn btn-primary">Gönder</button>
-</form>
-
-@if (ViewBag.Result != null)
-{
-    <div class="alert alert-info mt-3">
-        <strong>Sonuç:</strong>
-        <pre>@ViewBag.Result</pre>
-    </div>
-}
+</div>
