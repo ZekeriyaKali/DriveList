@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Net.Http.Headers;
+using System.Text.Json;
 
 namespace DriveListApi.Controllers
 {
@@ -47,7 +48,19 @@ namespace DriveListApi.Controllers
             var response = await client.PostAsync("http://localhost:5001/diagnose", form);
             var json = await response.Content.ReadAsStringAsync();
 
-            ViewBag.Result = json;
+            try
+            {
+                // JSON'dan sadece "diagnosis" alanını al
+                var diagnosis = JsonDocument.Parse(json)
+                                          .RootElement
+                                          .GetProperty("diagnosis")
+                                          .GetString();
+                ViewBag.Result = diagnosis;
+            }
+            catch
+            {
+                ViewBag.Result = "Sonuç alınamadı veya geçersiz formatta geldi.";
+            }
             return View();
         }
     }
