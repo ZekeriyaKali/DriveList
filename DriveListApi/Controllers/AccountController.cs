@@ -1,6 +1,7 @@
 ﻿using DriveListApi.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace DriveListApi.Controllers
 {
@@ -119,6 +120,44 @@ namespace DriveListApi.Controllers
                 ModelState.AddModelError("", error.Description);
 
             return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult ExternalLogin(string provider, string returnUrl = null)
+        {
+            var redirectUrl = Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl });
+            var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+            return Challenge(properties, provider);
+        }
+
+        public async Task<IActionResult> ExternalLoginCallback(string returnUrl = null, string remoteError = null)
+        {
+            if (remoteError != null)
+            {
+                ModelState.AddModelError("", $"External provider error: {remoteError}");
+                return RedirectToAction(nameof(Login));
+            }
+
+            var info = await _signInManager.GetExternalLoginInfoAsync();
+            if (info == null) return RedirectToAction(nameof(Login));
+
+            var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false);
+
+            if (result.Succeeded)
+                return RedirectToLocal(returnUrl);
+
+            // Kullanıcı yoksa yeni kaydet
+            var email = info.Principal.FindFirstValue(System.Security.Claims.ClaimTypes.Email);
+            var user = new ApplicationUser { UserName = email, Email = email };
+            var identityResult = await _userManager.CreateAsync(user);
+            if (identityResult.Succeeded)
+            {
+                await _userManager.AddLoginAsync(user, info);
+                await _signInManager.SignInAsync(user, false);
+                return RedirectToLocal(returnUrl);
+            }
+
+            return RedirectToAction(nameof(Login));
         }
 
     }
