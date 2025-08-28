@@ -97,5 +97,29 @@ namespace DriveListApi.Controllers
             return View(model);
         }
 
+        // GET: ResetPassword
+        [HttpGet]
+        public IActionResult ResetPassword(string token, string email) =>
+            View(new ResetPasswordViewModel { Token = token, Email = email });
+
+        // POST: ResetPassword
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid) return View(model);
+
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null) return RedirectToAction("ResetPasswordConfirmation");
+
+            var result = await _userManager.ResetPasswordAsync(user, model.Token, model.Password);
+            if (result.Succeeded)
+                return RedirectToAction("ResetPasswordConfirmation");
+
+            foreach (var error in result.Errors)
+                ModelState.AddModelError("", error.Description);
+
+            return View(model);
+        }
+
     }
 }
