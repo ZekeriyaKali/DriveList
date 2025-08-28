@@ -67,5 +67,35 @@ namespace DriveListApi.Controllers
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
+
+        [HttpGet]
+        public IActionResult ForgotPassword() => View();
+
+        // POST: ForgotPassword
+        [HttpPost]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                if (user == null)
+                {
+                    // Güvenlik için: email kayıtlı olmasa da aynı ekran
+                    return RedirectToAction("ForgotPasswordConfirmation");
+                }
+
+                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var resetLink = Url.Action("ResetPassword", "Account",
+                    new { token, email = user.Email }, Request.Scheme);
+
+                // 📧 burada kendi mail servisinden gönder (SMTP, SendGrid vs.)
+                Console.WriteLine($"Reset link: {resetLink}");
+
+                return RedirectToAction("ForgotPasswordConfirmation");
+            }
+
+            return View(model);
+        }
+
     }
 }
