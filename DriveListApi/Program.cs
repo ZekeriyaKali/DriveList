@@ -30,6 +30,15 @@ builder.Services.AddAuthentication()
     {
         options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
         options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+
+        options.CallbackPath = "/signin-google";
+
+        options.Events.OnRemoteFailure = context =>
+        {
+            context.Response.Redirect("/Account/Login?error=access_denied");
+            context.HandleResponse(); // Hatanýn middleware tarafýndan iþlenmesini durdurur
+            return Task.CompletedTask;
+        };
     });
 
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
