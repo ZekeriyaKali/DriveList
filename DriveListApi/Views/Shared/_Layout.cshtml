@@ -57,6 +57,15 @@
                             <i class="bi bi-tools"></i> Arıza Teşhisi
                         </a>
                     </li>
+
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="CarPrediction" asp-action="History">
+                                <i class="bi bi-clock-history"></i> Tahmin Geçmişim
+                            </a>
+                        </li>
+                    }
                 </ul>
 
                 <!-- Sağ Menü (Oturum / Profil) -->
