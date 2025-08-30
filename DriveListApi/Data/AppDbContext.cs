@@ -9,5 +9,6 @@ namespace DriveListApi.Data
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
         public DbSet<Prediction> Predictions { get; set; }
+        public DbSet<PredictionHistory> PredictionHistories { get; set; }
     }
 }
