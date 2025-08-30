@@ -1,50 +1,54 @@
-﻿@model IEnumerable<PredictionHistory>
-
+﻿@model List<DriveListApi.Models.PredictionHistory>
 @{
     ViewData["Title"] = "Tahmin Geçmişim";
 }
 
 <div class="container my-5">
-    <h2 class="text-center mb-4">📜 Tahmin Geçmişiniz</h2>
+    <h2 class="text-center mb-4">📜 Tahmin Geçmişim</h2>
 
-    @if (!Model.Any())
+    @if (Model == null || !Model.Any())
     {
-        <div class="alert alert-info text-center">Henüz bir tahmin yapmadınız.</div>
+        <div class="alert alert-info text-center shadow-sm">
+            Henüz tahmin geçmişiniz bulunmamaktadır. 🚗💨
+        </div>
     }
     else
     {
-        <div class="table-responsive shadow rounded-3">
-            <table class="table table-striped table-hover align-middle">
-                <thead class="table-dark">
-                    <tr>
-                        <th>Tarih</th>
-                        <th>Marka</th>
-                        <th>Model</th>
-                        <th>Yıl</th>
-                        <th>Km</th>
-                        <th>Vites</th>
-                        <th>Yakıt</th>
-                        <th>Şehir</th>
-                        <th>Tahmini Fiyat</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>@item.CreatedAt.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</td>
-                            <td>@item.Brand</td>
-                            <td>@item.Model</td>
-                            <td>@item.Year</td>
-                            <td>@String.Format("{0:N0}", item.Km)</td>
-                            <td>@item.GearType</td>
-                            <td>@item.FuelType</td>
-                            <td>@item.City</td>
-                            <td><strong>@String.Format("{0:N0}", item.PredictedPrice) ₺</strong></td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+            @foreach (var item in Model)
+            {
+                <div class="col">
+                    <div class="card shadow-sm border-0 rounded-4 h-100 hover-shadow">
+                        <div class="card-header bg-primary text-white rounded-top-4">
+                            <h5 class="mb-0">@item.Brand @item.Model</h5>
+                            <small>@item.CreatedAt.ToLocalTime().ToString("dd MMM yyyy HH:mm")</small>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-group list-group-flush mb-3">
+                                <li class="list-group-item"><strong>Yıl:</strong> @item.Year</li>
+                                <li class="list-group-item"><strong>Kilometre:</strong> @String.Format("{0:N0}", item.Km) km</li>
+                                <li class="list-group-item"><strong>Vites:</strong> @item.GearType</li>
+                                <li class="list-group-item"><strong>Yakıt:</strong> @item.FuelType</li>
+                                <li class="list-group-item"><strong>Şehir:</strong> @item.City</li>
+                            </ul>
+                            <div class="alert alert-success text-center shadow-sm fs-5 mb-0">
+                                Tahmini Fiyat: <span class="fw-bold text-dark">@String.Format("{0:N0}", item.PredictedPrice) ₺</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
         </div>
     }
 </div>
+
+<style>
+    .hover-shadow {
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+        .hover-shadow:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
+        }
+</style>
