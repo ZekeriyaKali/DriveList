@@ -3,16 +3,55 @@
     ViewData["Title"] = "Profilim";
 }
 
-<div class="card shadow-lg mt-4">
-    <div class="card-header bg-primary text-white">
-        <h4><i class="bi bi-person-circle"></i> Profilim</h4>
-    </div>
-    <div class="card-body">
-        <p><strong>Kullanıcı Adı:</strong> @Model.UserName</p>
-        <p><strong>Email:</strong> @Model.Email</p>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-primary text-white d-flex align-items-center rounded-top-4">
+                    <i class="bi bi-person-circle me-2 fs-4"></i>
+                    <h5 class="mb-0">Profil Bilgilerim</h5>
+                </div>
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center mb-4">
+                        <!-- Avatar -->
+                        <img src="https://ui-avatars.com/api/?name=@Model.UserName&background=0D6EFD&color=fff&size=80"
+                             class="rounded-circle shadow-sm me-3 border" alt="Avatar" />
+                        <div>
+                            <h4 class="fw-bold mb-1">@Model.UserName</h4>
+                            <p class="text-muted mb-0">@Model.Email</p>
+                        </div>
+                    </div>
 
-        <a class="btn btn-outline-primary" asp-controller="Account" asp-action="ChangePassword">
-            <i class="bi bi-key"></i> Şifre Değiştir
-        </a>
+                    <hr />
+
+                    <div class="list-group list-group-flush">
+                        <a asp-controller="Account" asp-action="ChangePassword"
+                           class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            <span><i class="bi bi-key text-primary me-2"></i> Şifre Değiştir</span>
+                            <i class="bi bi-chevron-right"></i>
+                        </a>
+
+                        <a asp-controller="CarPrediction" asp-action="History"
+                           class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            <span><i class="bi bi-clock-history text-warning me-2"></i> Tahmin Geçmişim</span>
+                            <i class="bi bi-chevron-right"></i>
+                        </a>
+
+                        <a asp-controller="Diagnosis" asp-action="History"
+                           class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            <span><i class="bi bi-tools text-success me-2"></i> Arıza Teşhis Geçmişim</span>
+                            <i class="bi bi-chevron-right"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="card-footer text-center bg-light rounded-bottom-4">
+                    <form asp-controller="Account" asp-action="Logout" method="post">
+                        <button type="submit" class="btn btn-danger px-4">
+                            <i class="bi bi-box-arrow-right"></i> Çıkış Yap
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
