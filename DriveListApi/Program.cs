@@ -1,4 +1,4 @@
-using DriveListApi.Data;
+ï»¿using DriveListApi.Data;
 using DriveListApi.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -24,8 +24,8 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 .AddDefaultTokenProviders();
 
 
-// Google gibi external provider'lar için ayrý ekleme:
-builder.Services.AddAuthentication()
+// Google gibi external provider'lar iÃ§in ayrÄ± ekleme:
+/*builder.Services.AddAuthentication()
     .AddGoogle(options =>
     {
         options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
@@ -36,16 +36,17 @@ builder.Services.AddAuthentication()
         options.Events.OnRemoteFailure = context =>
         {
             context.Response.Redirect("/Account/Login?error=access_denied");
-            context.HandleResponse(); // Hatanýn middleware tarafýndan iþlenmesini durdurur
+            context.HandleResponse(); // HatanÄ±n middleware tarafÄ±ndan iÅŸlenmesini durdurur
             return Task.CompletedTask;
         };
-    });
+    });*/
+
 
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
-builder.Services.AddHttpClient();  // Flask API çaðrýsý için
+builder.Services.AddHttpClient();  // Flask API Ã§aÄŸrÄ±sÄ± iÃ§in
 builder.Services.AddControllers();
 builder.Services.AddControllersWithViews();
-// (Ýsteðe baðlý) Session — kýsa ömürlü UI verileri için
+// (Ä°steÄŸe baÄŸlÄ±) Session â€” kÄ±sa Ã¶mÃ¼rlÃ¼ UI verileri iÃ§in
 builder.Services.AddSession(o =>
 {
     o.IdleTimeout = TimeSpan.FromMinutes(20);
@@ -64,14 +65,14 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.UseSession();           // Session kullanacaksan
-app.UseAuthentication();    // Identity için þart
+app.UseAuthentication();    // Identity iÃ§in ÅŸart
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}"
 );
 
-// Default Identity UI endpoint’leri (Login/Register) için:
+// Default Identity UI endpointâ€™leri (Login/Register) iÃ§in:
 app.MapRazorPages();
 
 app.MapControllers();

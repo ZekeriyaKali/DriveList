@@ -1,4 +1,5 @@
 ﻿using DriveListApi.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -170,6 +171,25 @@ namespace DriveListApi.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
+        }
+
+        [Authorize]
+        public async Task<IActionResult> Manage()
+        {
+            var user = await _userManager.GetUserAsync(User);
+
+            if (user == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            var model = new ProfileViewModel
+            {
+                UserName = user.UserName,
+                Email = user.Email
+            };
+
+            return View(model);
         }
 
     }
