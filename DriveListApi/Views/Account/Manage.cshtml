@@ -1,0 +1,18 @@
+﻿@model ProfileViewModel
+@{
+    ViewData["Title"] = "Profilim";
+}
+
+<div class="card shadow-lg mt-4">
+    <div class="card-header bg-primary text-white">
+        <h4><i class="bi bi-person-circle"></i> Profilim</h4>
+    </div>
+    <div class="card-body">
+        <p><strong>Kullanıcı Adı:</strong> @Model.UserName</p>
+        <p><strong>Email:</strong> @Model.Email</p>
+
+        <a class="btn btn-outline-primary" asp-controller="Account" asp-action="ChangePassword">
+            <i class="bi bi-key"></i> Şifre Değiştir
+        </a>
+    </div>
+</div>
