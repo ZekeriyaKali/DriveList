@@ -23,6 +23,12 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 .AddEntityFrameworkStores<AppDbContext>()
 .AddDefaultTokenProviders();
 
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Account/Login";
+    options.LogoutPath = "/Account/Logout";
+    options.AccessDeniedPath = "/Account/AccessDenied";
+});
 
 // Google gibi external provider'lar için ayrı ekleme:
 /*builder.Services.AddAuthentication()
@@ -62,10 +68,9 @@ app.UseRouting();
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
-
-app.UseSession();           // Session kullanacaksan
 app.UseAuthentication();    // Identity için şart
+app.UseAuthorization();
+app.UseSession();           // Session kullanacaksan
 
 app.MapControllerRoute(
     name: "default",
