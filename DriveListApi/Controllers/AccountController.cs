@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace DriveListApi.Controllers
@@ -200,10 +201,20 @@ namespace DriveListApi.Controllers
                 return RedirectToAction("Login");
             }
 
+            // Veritabanı context'i (DI ile inject edebilirsin, ctor’a eklemelisin)
+            var totalPredictions = await _context.CarPredictions
+                .CountAsync(x => x.UserId == user.Id);
+
+            var totalDiagnoses = await _context.Diagnoses
+                .CountAsync(x => x.UserId == user.Id);
+
             var model = new ProfileViewModel
             {
                 UserName = user.UserName,
-                Email = user.Email
+                Email = user.Email,
+                TotalPredictions = totalPredictions,
+                TotalDiagnoses = totalDiagnoses,
+                LastLoginTime = user.LastLoginTime
             };
 
             return View(model);
