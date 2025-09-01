@@ -51,15 +51,32 @@ namespace DriveListApi.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
+                return View(model);
+
+            // Kullanıcıyı kullanıcı adı ile al
+            var user = await _userManager.FindByNameAsync(model.Username);
+
+            if (user != null)
             {
-                var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, false);
+                var result = await _signInManager.PasswordSignInAsync(
+                    user.UserName,
+                    model.Password,
+                    model.RememberMe,
+                    lockoutOnFailure: false
+                );
 
                 if (result.Succeeded)
-                    return RedirectToAction("Index", "Home");
+                {
+                    // 🔽 Son giriş güncelle
+                    user.LastLoginTime = DateTime.Now;
+                    await _userManager.UpdateAsync(user);
 
-                ModelState.AddModelError("", "Geçersiz giriş denemesi.");
+                    return RedirectToAction("Index", "Home");
+                }
             }
+
+            ModelState.AddModelError("", "Geçersiz giriş denemesi.");
             return View(model);
         }
 
