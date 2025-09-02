@@ -120,10 +120,22 @@ namespace DriveListApi.Controllers
             return View(model);
         }
 
-        // GET: ResetPassword
         [HttpGet]
-        public IActionResult ResetPassword(string token, string email) =>
-            View(new ResetPasswordViewModel { Token = token, Email = email });
+        public IActionResult ResetPassword(string token, string email)
+        {
+            if (string.IsNullOrEmpty(token) || string.IsNullOrEmpty(email))
+            {
+                return RedirectToAction("Error", "Home");
+            }
+
+            var model = new ResetPasswordViewModel
+            {
+                Token = token,
+                Email = email
+            };
+
+            return View(model);
+        }
 
         // POST: ResetPassword
         [HttpPost]
