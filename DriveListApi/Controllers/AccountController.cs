@@ -208,8 +208,7 @@ namespace DriveListApi.Controllers
             var totalPredictions = await _context.Predictions
                 .CountAsync(x => x.UserId == user.Id);
 
-            var totalDiagnoses = await _context.Diagnoses
-                .CountAsync(x => x.UserId == user.Id);
+            var totalDiagnoses = 0;
 
             var model = new ProfileViewModel
             {
