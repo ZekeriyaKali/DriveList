@@ -12,5 +12,7 @@
         public string City { get; set; }
         public double PredictedPrice { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.Now;
+
+        public string UserId { get; set; }
     }
 }

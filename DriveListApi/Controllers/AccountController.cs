@@ -205,7 +205,7 @@ namespace DriveListApi.Controllers
             }
 
             // Veritabanı context'i (DI ile inject edebilirsin, ctor’a eklemelisin)
-            var totalPredictions = await _context.CarPredictions
+            var totalPredictions = await _context.Predictions
                 .CountAsync(x => x.UserId == user.Id);
 
             var totalDiagnoses = await _context.Diagnoses
