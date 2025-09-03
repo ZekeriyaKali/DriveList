@@ -121,6 +121,12 @@ namespace DriveListApi.Controllers
         }
 
         [HttpGet]
+        public IActionResult ForgotPasswordConfirmation()
+        {
+            return View();
+        }
+
+        [HttpGet]
         public IActionResult ResetPassword(string token, string email)
         {
             if (string.IsNullOrEmpty(token) || string.IsNullOrEmpty(email))
