@@ -3,6 +3,8 @@ using DriveListApi.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,7 +40,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
         };
     });*/
 
-builder.Services.AddAuthentication(options =>
+/*builder.Services.AddAuthentication(options =>
 {
     options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = "Google";
@@ -57,6 +59,26 @@ builder.Services.AddAuthentication(options =>
     options.Scope.Add("https://www.googleapis.com/auth/userinfo.email");
     options.Scope.Add("https://www.googleapis.com/auth/userinfo.profile");
 
+    options.Events.OnRemoteFailure = context =>
+    {
+        context.Response.Redirect("/Account/Login?error=access_denied");
+        context.HandleResponse();
+        return Task.CompletedTask;
+    };
+});*/
+
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+options.DefaultChallengeScheme = "Google";
+})
+.AddCookie()
+.AddGoogle(options =>
+{
+    options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+    options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+    options.CallbackPath = "/signin-google"; // default zaten bu
     options.Events.OnRemoteFailure = context =>
     {
         context.Response.Redirect("/Account/Login?error=access_denied");
