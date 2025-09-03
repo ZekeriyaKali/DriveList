@@ -1,9 +1,8 @@
 ﻿using DriveListApi.Data;
 using DriveListApi.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authentication.Google;
-using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,7 +23,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 .AddEntityFrameworkStores<AppDbContext>()
 .AddDefaultTokenProviders();
 
-builder.Services.AddAuthentication()
+/*builder.Services.AddAuthentication()
     .AddGoogle(options =>
     {
         options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
@@ -37,7 +36,35 @@ builder.Services.AddAuthentication()
             context.HandleResponse();
             return Task.CompletedTask;
         };
-    });
+    });*/
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = "Google";
+})
+.AddCookie()
+.AddOAuth("Google", options =>
+{
+    options.ClientId = builder.Configuration["GoogleKeys:ClientId"];
+    options.ClientSecret = builder.Configuration["GoogleKeys:ClientSecret"];
+    options.CallbackPath = new PathString("/signin-google");
+
+    options.AuthorizationEndpoint = "https://accounts.google.com/o/oauth2/v2/auth";
+    options.TokenEndpoint = "https://oauth2.googleapis.com/token";
+    options.UserInformationEndpoint = "https://www.googleapis.com/oauth2/v2/userinfo";
+
+    options.Scope.Add("https://www.googleapis.com/auth/userinfo.email");
+    options.Scope.Add("https://www.googleapis.com/auth/userinfo.profile");
+
+    options.Events.OnRemoteFailure = context =>
+    {
+        context.Response.Redirect("/Account/Login?error=access_denied");
+        context.HandleResponse();
+        return Task.CompletedTask;
+    };
+});
+
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
