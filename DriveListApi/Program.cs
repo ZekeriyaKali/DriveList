@@ -2,6 +2,7 @@
 using DriveListApi.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,29 +24,27 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 .AddEntityFrameworkStores<AppDbContext>()
 .AddDefaultTokenProviders();
 
+builder.Services.AddAuthentication()
+    .AddGoogle(options =>
+    {
+        options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+        options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+        options.CallbackPath = "/signin-google";
+
+        options.Events.OnRemoteFailure = context =>
+        {
+            context.Response.Redirect("/Account/Login?error=access_denied");
+            context.HandleResponse();
+            return Task.CompletedTask;
+        };
+    });
+
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/Account/Login";
     options.LogoutPath = "/Account/Logout";
     options.AccessDeniedPath = "/Account/AccessDenied";
 });
-
-// Google gibi external provider'lar için ayrı ekleme:
-/*builder.Services.AddAuthentication()
-    .AddGoogle(options =>
-    {
-        options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
-        options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
-
-        options.CallbackPath = "/signin-google";
-
-        options.Events.OnRemoteFailure = context =>
-        {
-            context.Response.Redirect("/Account/Login?error=access_denied");
-            context.HandleResponse(); // Hatanın middleware tarafından işlenmesini durdurur
-            return Task.CompletedTask;
-        };
-    });*/
 
 
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();

@@ -72,7 +72,7 @@ namespace DriveListApi.Controllers
 
                 if (result.Succeeded)
                 {
-                    // 🔽 Son giriş güncelle
+                    // Son giriş güncelle
                     user.LastLoginTime = DateTime.Now;
                     await _userManager.UpdateAsync(user);
 
