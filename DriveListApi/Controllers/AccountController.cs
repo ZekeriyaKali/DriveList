@@ -36,8 +36,17 @@ namespace DriveListApi.Controllers
 
                 if (result.Succeeded)
                 {
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Index", "Home");
+                    var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var confirmLink = Url.Action("ConfirmEmail", "Account",
+                        new { userId = user.Id, token }, Request.Scheme);
+
+                    // Burada gerçek e-posta servisine gönder (SMTP/SendGrid). Geliştirici modu için:
+                    Console.WriteLine($"[DEV] Email confirm link: {confirmLink}");
+
+                    // Linki ekranda göstermek istersen:
+                    TempData["ConfirmEmailLink"] = confirmLink;
+
+                    return RedirectToAction("RegisterConfirmation");
                 }
 
                 foreach (var error in result.Errors)
