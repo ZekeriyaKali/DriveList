@@ -1,0 +1,9 @@
+﻿@{
+    ViewData["Title"] = "Hata";
+}
+
+<div class="alert alert-danger mt-5 text-center">
+    <h3>❌ Geçersiz istek</h3>
+    <p>Şifre sıfırlama bağlantınız geçersiz veya süresi dolmuş olabilir.</p>
+    <a asp-controller="Account" asp-action="ForgotPassword" class="btn btn-warning mt-3">Yeniden Dene</a>
+</div>
