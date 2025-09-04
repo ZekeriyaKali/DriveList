@@ -56,6 +56,20 @@ namespace DriveListApi.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> ConfirmEmail(string userId, string token)
+        {
+            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(token))
+                return RedirectToAction("Error", "Home");
+
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+                return RedirectToAction("Error", "Home");
+
+            var result = await _userManager.ConfirmEmailAsync(user, token);
+            return View(result.Succeeded); // View'a bool model gönderiyoruz
+        }
+
         // GET: Login
         [HttpGet]
         public IActionResult Login() => View();
