@@ -14,12 +14,20 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
-    options.SignIn.RequireConfirmedAccount = false;
+    // ✅ E-posta onayı zorunlu
+    options.SignIn.RequireConfirmedAccount = true;
+
+    // 🔐 Parola politikası (istersen burada daha da sıkılaştırabilirsin)
     options.Password.RequireDigit = true;
     options.Password.RequireLowercase = true;
     options.Password.RequireUppercase = true;
-    options.Password.RequiredLength = 6;
+    options.Password.RequiredLength = 8;          // 6 → 8 önerisi
     options.Password.RequireNonAlphanumeric = false;
+
+    // 🛡️ Lockout ayarları (yanlış şifre denemesinde kilitle)
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+    options.Lockout.MaxFailedAccessAttempts = 5;
+    options.Lockout.AllowedForNewUsers = true;
 })
 .AddEntityFrameworkStores<AppDbContext>()
 .AddDefaultTokenProviders();
