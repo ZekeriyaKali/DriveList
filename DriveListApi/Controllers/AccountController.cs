@@ -90,7 +90,7 @@ namespace DriveListApi.Controllers
                     user.UserName,
                     model.Password,
                     model.RememberMe,
-                    lockoutOnFailure: false
+                    lockoutOnFailure: true
                 );
 
                 if (result.Succeeded)
@@ -100,6 +100,15 @@ namespace DriveListApi.Controllers
                     await _userManager.UpdateAsync(user);
 
                     return RedirectToAction("Index", "Home");
+                }
+
+                if (result.IsLockedOut)
+                    return View("Lockout");
+
+                if (result.IsNotAllowed) // genelde e-posta onayı yoksa düşer
+                {
+                    ModelState.AddModelError("", "Giriş için e-posta adresinizi doğrulamanız gerekir.");
+                    return View(model);
                 }
             }
 
