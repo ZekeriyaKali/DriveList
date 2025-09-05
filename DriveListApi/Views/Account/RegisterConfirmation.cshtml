@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["Title"] = "Kayıt Onayı Gerekiyor";
+}
+<div class="d-flex justify-content-center align-items-center vh-100">
+    <div class="card shadow-lg p-4" style="width: 480px;">
+        <h3 class="text-center mb-3">📨 E-posta Onayı</h3>
+        <p>
+            Kaydın başarıyla oluşturuldu. Giriş yapabilmek için e-posta adresini doğrulaman gerekiyor.
+            Lütfen posta kutunu kontrol et.
+        </p>
+
+        @if (TempData["ConfirmEmailLink"] is string devLink)
+        {
+            <div class="alert alert-warning mt-3">
+                <div class="fw-bold">Geliştirici modu</div>
+                <div>Prod’da e-posta ile gidecek linki burada gösteriyoruz:</div>
+                <div class="mt-2">
+                    <a href="@devLink">@devLink</a>
+                </div>
+            </div>
+        }
+
+        <div class="text-center mt-3">
+            <a asp-controller="Account" asp-action="Login" class="btn btn-primary">Giriş Sayfasına Dön</a>
+        </div>
+    </div>
+</div>
