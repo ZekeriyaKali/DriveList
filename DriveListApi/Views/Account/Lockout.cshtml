@@ -1,0 +1,13 @@
+﻿@{
+    ViewData["Title"] = "Hesap Kilitlendi";
+}
+<div class="d-flex justify-content-center align-items-center vh-100">
+    <div class="card shadow-lg p-4" style="width: 420px;">
+        <h3 class="text-center mb-3">🔒 Hesap Kilitlendi</h3>
+        <p>Çok sayıda hatalı giriş nedeniyle hesabın geçici olarak kilitlendi.</p>
+        <p>Lütfen birkaç dakika sonra tekrar dene veya şifreni sıfırla.</p>
+        <div class="text-center mt-3">
+            <a asp-controller="Account" asp-action="ForgotPassword" class="btn btn-warning">Şifre Sıfırla</a>
+        </div>
+    </div>
+</div>
