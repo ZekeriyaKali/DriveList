@@ -1,0 +1,28 @@
+﻿@model bool
+@{
+    ViewData["Title"] = "E-posta Onayı";
+}
+<div class="d-flex justify-content-center align-items-center vh-100">
+    <div class="card shadow-lg p-4" style="width: 420px;">
+        <h3 class="text-center mb-3">E-posta Onayı</h3>
+
+        @if (Model)
+        {
+            <div class="alert alert-success">
+                E-posta adresin başarıyla doğrulandı. Artık giriş yapabilirsin.
+            </div>
+            <div class="text-center">
+                <a asp-controller="Account" asp-action="Login" class="btn btn-success">Giriş Yap</a>
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-danger">
+                E-posta doğrulama başarısız oldu. Link süresi dolmuş olabilir veya geçersiz.
+            </div>
+            <div class="text-center">
+                <a asp-controller="Account" asp-action="Register" class="btn btn-outline-danger">Tekrar Kayıt Ol</a>
+            </div>
+        }
+    </div>
+</div>
