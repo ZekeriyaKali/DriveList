@@ -39,6 +39,17 @@
     </div>
 </div>
 
+@section Styles {
+    <style>
+        .field-validation-error {
+            color: #dc3545;
+            font-size: 0.85rem;
+            margin-top: 4px;
+            display: block;
+        }
+    </style>
+}
+
 @section Scripts {
     @await Html.PartialAsync("_ValidationScriptsPartial")
 }
