@@ -32,48 +32,6 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 .AddEntityFrameworkStores<AppDbContext>()
 .AddDefaultTokenProviders();
 
-/*builder.Services.AddAuthentication()
-    .AddGoogle(options =>
-    {
-        options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
-        options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
-        options.CallbackPath = "/signin-google";
-
-        options.Events.OnRemoteFailure = context =>
-        {
-            context.Response.Redirect("/Account/Login?error=access_denied");
-            context.HandleResponse();
-            return Task.CompletedTask;
-        };
-    });*/
-
-/*builder.Services.AddAuthentication(options =>
-{
-    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = "Google";
-})
-.AddCookie()
-.AddOAuth("Google", options =>
-{
-    options.ClientId = builder.Configuration["GoogleKeys:ClientId"];
-    options.ClientSecret = builder.Configuration["GoogleKeys:ClientSecret"];
-    options.CallbackPath = new PathString("/signin-google");
-
-    options.AuthorizationEndpoint = "https://accounts.google.com/o/oauth2/v2/auth";
-    options.TokenEndpoint = "https://oauth2.googleapis.com/token";
-    options.UserInformationEndpoint = "https://www.googleapis.com/oauth2/v2/userinfo";
-
-    options.Scope.Add("https://www.googleapis.com/auth/userinfo.email");
-    options.Scope.Add("https://www.googleapis.com/auth/userinfo.profile");
-
-    options.Events.OnRemoteFailure = context =>
-    {
-        context.Response.Redirect("/Account/Login?error=access_denied");
-        context.HandleResponse();
-        return Task.CompletedTask;
-    };
-});*/
-
 
 builder.Services.AddAuthentication(options =>
 {
@@ -100,6 +58,14 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.LoginPath = "/Account/Login";
     options.LogoutPath = "/Account/Logout";
     options.AccessDeniedPath = "/Account/AccessDenied";
+
+    // Security hardening
+    options.Cookie.Name = "DriveList.Auth";
+    options.Cookie.HttpOnly = true;
+    options.Cookie.SameSite = SameSiteMode.Strict;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // production için
+    options.ExpireTimeSpan = TimeSpan.FromHours(8);
+    options.SlidingExpiration = true;
 });
 
 
