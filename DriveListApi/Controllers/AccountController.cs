@@ -87,38 +87,54 @@ namespace DriveListApi.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            // Kullanıcıyı kullanıcı adı ile al
+            // get client info
+            var ip = HttpContext.Connection.RemoteIpAddress?.ToString();
+            var userAgent = Request.Headers["User-Agent"].ToString();
+
             var user = await _userManager.FindByNameAsync(model.Username);
+            var usernameForLog = model.Username;
 
-            if (user != null)
+            var result = await _signInManager.PasswordSignInAsync(
+                model.Username, model.Password, model.RememberMe, lockoutOnFailure: true);
+
+            // create audit record
+            var audit = new LoginAudit
             {
-                var result = await _signInManager.PasswordSignInAsync(
-                    user.UserName,
-                    model.Password,
-                    model.RememberMe,
-                    lockoutOnFailure: true
-                );
+                UserId = user?.Id,
+                Username = usernameForLog,
+                Success = result.Succeeded,
+                IpAddress = ip,
+                UserAgent = userAgent,
+                FailureReason = result.Succeeded ? null :
+                    result.IsLockedOut ? "LockedOut" :
+                    result.IsNotAllowed ? "NotAllowed" :
+                    "InvalidCredentials"
+            };
 
-                if (result.Succeeded)
+            _context.LoginAudits.Add(audit);
+            await _context.SaveChangesAsync();
+
+            if (result.Succeeded)
+            {
+                // update last login
+                if (user != null)
                 {
-                    // Son giriş güncelle
-                    user.LastLoginTime = DateTime.Now;
+                    user.LastLoginTime = DateTime.UtcNow;
                     await _userManager.UpdateAsync(user);
-
-                    return RedirectToAction("Index", "Home");
                 }
-
-                if (result.IsLockedOut)
-                    return View("Lockout");
-
-                if (result.IsNotAllowed) // genelde e-posta onayı yoksa düşer
-                {
-                    ModelState.AddModelError("", "Giriş için e-posta adresinizi doğrulamanız gerekir.");
-                    return View(model);
-                }
+                return RedirectToAction("Index", "Home");
             }
 
-            ModelState.AddModelError("", "Geçersiz giriş denemesi.");
+            if (result.IsLockedOut)
+                return View("Lockout");
+
+            if (result.IsNotAllowed)
+            {
+                ModelState.AddModelError("", "Please confirm your email before signing in.");
+                return View(model);
+            }
+
+            ModelState.AddModelError("", "Invalid login attempt.");
             return View(model);
         }
 
