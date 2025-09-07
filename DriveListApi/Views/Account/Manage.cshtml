@@ -78,3 +78,29 @@
         </div>
     </div>
 </div>
+
+<h5>Son Girişler</h5>
+<table class="table table-sm">
+    <thead><tr><th>Tarih (UTC)</th><th>IP</th><th>Success</th><th>User-Agent</th></tr></thead>
+    <tbody>
+        @foreach (var a in Model.RecentLoginAttempts)
+        {
+            <tr>
+                <td>@a.Timestamp.ToString("yyyy-MM-dd HH:mm")</td>
+                <td>@a.IpAddress</td>
+                <td>
+                    @if (a.Success)
+                    {
+                        <span class="badge bg-success">Success</span>
+                    }
+                    else
+                    {
+
+                        <span class="badge bg-danger">Fail</span>
+                    }
+                </td>
+                <td><small>@a.UserAgent</small></td>
+            </tr>
+        }
+    </tbody>
+</table>
