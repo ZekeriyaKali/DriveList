@@ -280,6 +280,13 @@ namespace DriveListApi.Controllers
             var totalPredictions = await _context.Predictions
                 .CountAsync(x => x.UserId == user.Id);
 
+            var recentLogins = await _context.LoginAudits
+       .Where(l => l.UserId == user.Id)
+       .OrderByDescending(l => l.Timestamp)
+       .Take(10)
+       .ToListAsync();
+
+
             var totalDiagnoses = 0;
 
             var model = new ProfileViewModel
