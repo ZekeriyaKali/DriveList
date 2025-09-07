@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Net.Http;
 using System.Security.Claims;
 
 namespace DriveListApi.Controllers
@@ -52,8 +53,24 @@ namespace DriveListApi.Controllers
                 foreach (var error in result.Errors)
                     ModelState.AddModelError("", error.Description);
             }
+            var recaptchaResponse = Request.Form["g-recaptcha-response"].ToString();
+            if (!await ValidateRecaptchaAsync(recaptchaResponse))
+            {
+                ModelState.AddModelError("", "reCAPTCHA doğrulaması başarısız.");
+                return View(model);
+            }
 
             return View(model);
+        }
+
+        private async Task<bool> ValidateRecaptchaAsync(string token)
+        {
+            if (string.IsNullOrEmpty(token)) return false;
+            var secret = Configuration["Recaptcha:Secret"]; // store in secrets
+            var client = _httpClientFactory.CreateClient();
+            var response = await client.PostAsync($"https://www.google.com/recaptcha/api/siteverify?secret={secret}&response={token}", null);
+            var payload = await response.Content.ReadFromJsonAsync<RecaptchaVerifyResponse>();
+            return payload?.Success == true && (payload.Score == null || payload.Score >= 0.5m);
         }
 
         [HttpGet]
