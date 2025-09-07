@@ -216,6 +216,60 @@ namespace DriveListApi.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> EnableAuthenticator()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null) return RedirectToAction("Login");
+
+            // ensure key exists
+            var unformattedKey = await _userManager.GetAuthenticatorKeyAsync(user);
+            if (string.IsNullOrEmpty(unformattedKey))
+            {
+                await _userManager.ResetAuthenticatorKeyAsync(user);
+                unformattedKey = await _userManager.GetAuthenticatorKeyAsync(user);
+            }
+
+            var authenticatorUri = GenerateQrCodeUri(user.Email ?? user.UserName, unformattedKey);
+            // generate QR code image bytes with QRCoder
+            using var qrGenerator = new QRCoder.QRCodeGenerator();
+            using var qrData = qrGenerator.CreateQrCode(authenticatorUri, QRCoder.QRCodeGenerator.ECCLevel.Q);
+            using var qrCode = new QRCoder.PngByteQRCode(qrData);
+            var qrBytes = qrCode.GetGraphic(20);
+
+            var vm = new EnableAuthenticatorViewModel
+            {
+                SharedKey = FormatKey(unformattedKey),
+                AuthenticatorUri = authenticatorUri,
+                QrCodeImageBase64 = "data:image/png;base64," + Convert.ToBase64String(qrBytes)
+            };
+
+            return View(vm);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> EnableAuthenticator(EnableAuthenticatorViewModel model)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null) return RedirectToAction("Login");
+
+            var verificationCode = model.Code.Replace(" ", string.Empty).Replace("-", string.Empty);
+
+            var isValid = await _userManager.VerifyTwoFactorTokenAsync(
+                 user, _userManager.Options.Tokens.AuthenticatorTokenProvider, verificationCode);
+
+            if (!isValid)
+            {
+                ModelState.AddModelError("Code", "Verification code is invalid.");
+                return View(model);
+            }
+
+            await _userManager.SetTwoFactorEnabledAsync(user, true);
+            return RedirectToAction("Manage");
+        }
+
         [HttpPost]
         public IActionResult ExternalLogin(string provider, string returnUrl = null)
         {
