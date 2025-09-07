@@ -7,6 +7,7 @@
         public int TotalPredictions { get; set; }
         public int TotalDiagnoses { get; set; }
         public DateTime? LastLoginTime { get; set; }
+        public List<LoginAudit> RecentLoginAttempts { get; set; } = new();
 
     }
 }
