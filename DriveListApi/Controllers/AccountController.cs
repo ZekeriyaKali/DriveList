@@ -289,6 +289,17 @@ namespace DriveListApi.Controllers
             return RedirectToAction("Manage");
         }
 
+        private string FormatKey(string unformattedKey)
+        {
+            return string.Join(" ", unformattedKey.ToUpper().Chunk(4).Select(c => new string(c)));
+        }
+
+        private string GenerateQrCodeUri(string email, string unformattedKey)
+        {
+            var issuer = Uri.EscapeDataString("DriveListApp"); // kendi uygulama adın
+            return $"otpauth://totp/{issuer}:{email}?secret={unformattedKey}&issuer={issuer}&digits=6";
+        }
+
         [HttpPost]
         public IActionResult ExternalLogin(string provider, string returnUrl = null)
         {
