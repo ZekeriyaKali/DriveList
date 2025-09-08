@@ -1,0 +1,30 @@
+﻿@model EnableAuthenticatorViewModel
+@{
+    ViewData["Title"] = "İki Aşamalı Doğrulama";
+}
+
+<div class="d-flex justify-content-center align-items-center vh-100">
+    <div class="card shadow-lg p-4" style="width: 450px;">
+        <h3 class="text-center mb-4">📲 İki Aşamalı Doğrulama</h3>
+
+        <p>
+            Authenticator uygulamanızı açın (Google Authenticator, Microsoft Authenticator vs.)
+            ve aşağıdaki QR kodunu tarayın.
+        </p>
+
+        <div class="text-center mb-3">
+            <img src="@Model.QrCodeImageBase64" alt="QR Code" class="img-fluid" />
+        </div>
+
+        <p><strong>Manuel Anahtar:</strong> @Model.SharedKey</p>
+
+        <form asp-action="EnableAuthenticator" method="post">
+            <div class="mb-3">
+                <label for="Code" class="form-label">Doğrulama Kodu</label>
+                <input asp-for="Code" class="form-control" />
+                <span asp-validation-for="Code" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-success w-100">Etkinleştir</button>
+        </form>
+    </div>
+</div>
