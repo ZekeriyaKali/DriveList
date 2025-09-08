@@ -3,6 +3,7 @@ using DriveListApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using System.Net.Http;
 using System.Security.Claims;
@@ -98,6 +99,7 @@ namespace DriveListApi.Controllers
         public IActionResult Login() => View();
 
         // POST: Login
+        [EnableRateLimiting("loginPolicy")]
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {

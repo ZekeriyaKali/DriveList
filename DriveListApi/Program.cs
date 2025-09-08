@@ -3,6 +3,8 @@ using DriveListApi.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.RateLimiting;
+
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -52,6 +54,24 @@ options.DefaultChallengeScheme = "Google";
     };
 });
 
+builder.Services.AddRateLimiter(options =>
+{
+    options.AddPolicy("loginPolicy", httpContext =>
+        RateLimitPartition.GetFixedWindowLimiter(
+            partitionKey: httpContext.Connection.RemoteIpAddress?.ToString() ?? "anon",
+            factory: _ => new FixedWindowRateLimiterOptions
+            {
+                PermitLimit = 10,
+                Window = TimeSpan.FromMinutes(1),
+                QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                QueueLimit = 0
+            }));
+
+    // global default (optional)
+    options.RejectedResponseStatusCode = 429;
+});
+
+
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
@@ -84,7 +104,7 @@ builder.Services.AddSession(o =>
 var app = builder.Build();
 
 app.UseStaticFiles();
-
+app.UseRateLimiter();
 app.UseRouting();
 
 app.UseHttpsRedirection();
