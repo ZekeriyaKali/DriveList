@@ -67,8 +67,11 @@ builder.Services.AddRateLimiter(options =>
                 QueueLimit = 0
             }));
 
-    // global default (optional)
-    options.RejectedResponseStatusCode = 429;
+    options.OnRejected = async (context, token) =>
+    {
+        context.HttpContext.Response.StatusCode = StatusCodes.Status429TooManyRequests;
+        await context.HttpContext.Response.WriteAsync("Çok fazla istek yaptınız. Lütfen biraz bekleyin.", token);
+    };
 });
 
 
