@@ -42,6 +42,13 @@ namespace DriveListApi.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
+            var recaptchaResponse = Request.Form["g-recaptcha-response"].ToString();
+            if (!await ValidateRecaptchaAsync(recaptchaResponse))
+            {
+                ModelState.AddModelError("", "reCAPTCHA doğrulaması başarısız oldu.");
+                return View(model);
+            }
+
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.Username, Email = model.Email };
@@ -64,12 +71,6 @@ namespace DriveListApi.Controllers
 
                 foreach (var error in result.Errors)
                     ModelState.AddModelError("", error.Description);
-            }
-            var recaptchaResponse = Request.Form["g-recaptcha-response"].ToString();
-            if (!await ValidateRecaptchaAsync(recaptchaResponse))
-            {
-                ModelState.AddModelError("", "reCAPTCHA doğrulaması başarısız.");
-                return View(model);
             }
 
             return View(model);
