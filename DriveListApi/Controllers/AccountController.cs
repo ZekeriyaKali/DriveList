@@ -77,12 +77,45 @@ namespace DriveListApi.Controllers
 
         private async Task<bool> ValidateRecaptchaAsync(string token)
         {
-            if (string.IsNullOrEmpty(token)) return false;
-            var secret = Configuration["Recaptcha:Secret"]; // store in secrets
+            if (string.IsNullOrWhiteSpace(token))
+                return false;
+
+            // Recaptcha secret'ı konfigürasyondan al
+            var secret = _configuration["Recaptcha:Secret"];
+            if (string.IsNullOrWhiteSpace(secret))
+            {
+                // Geliştirme ortamında isen konsola yazdırabilirsin; production'da secret olmadan doğrulama başarısız olmalı
+                // _logger?.LogWarning("Recaptcha secret not configured.");
+                return false;
+            }
+
             var client = _httpClientFactory.CreateClient();
-            var response = await client.PostAsync($"https://www.google.com/recaptcha/api/siteverify?secret={secret}&response={token}", null);
+
+            // Google reCAPTCHA verify endpoint expects form-urlencoded (POST)
+            var form = new Dictionary<string, string>
+            {
+                ["secret"] = secret,
+                ["response"] = token
+            };
+
+            using var content = new FormUrlEncodedContent(form);
+            using var response = await client.PostAsync("https://www.google.com/recaptcha/api/siteverify", content);
+
+            if (!response.IsSuccessStatusCode)
+                return false;
+
             var payload = await response.Content.ReadFromJsonAsync<RecaptchaVerifyResponse>();
-            return payload?.Success == true && (payload.Score == null || payload.Score >= 0.5m);
+            if (payload == null)
+                return false;
+
+            // Başarılıysa success==true; v3 kullanıyorsan score kontrolü de yap
+            if (!payload.Success) return false;
+
+            // Eğer v3 kullanıyorsan score eşiği uygulayabilirsin; v2 için Score null olacaktır
+            if (payload.Score.HasValue && payload.Score < 0.5m)
+                return false;
+
+            return true;
         }
 
         [HttpGet]
