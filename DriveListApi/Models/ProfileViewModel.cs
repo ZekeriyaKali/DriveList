@@ -8,6 +8,7 @@
         public int TotalDiagnoses { get; set; }
         public DateTime? LastLoginTime { get; set; }
         public List<LoginAudit> RecentLoginAttempts { get; set; } = new();
+        public int Credits { get; set; }
 
     }
 }
