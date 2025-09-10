@@ -29,5 +29,18 @@ namespace DriveListApi.Controllers
 
             return Ok(new { prediction, remainingCredits = user.Credits });
         }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public async Task<IActionResult> AddCredits(string userId, int amount)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null) return NotFound();
+
+            user.Credits += amount;
+            await _userManager.UpdateAsync(user);
+
+            return Ok(user.Credits);
+        }
     }
 }
