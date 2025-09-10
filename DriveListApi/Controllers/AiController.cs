@@ -1,14 +1,23 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using DriveListApi.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DriveListApi.Controllers
 {
-    public class AiController : Controller
+
+    [Authorize]
+    [Route("api/[controller]")]
+    [ApiController]
+    public class AiController : ControllerBase
     {
-        public IActionResult Index()
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IAIService _aiService;
+
+        public AiController(UserManager<ApplicationUser> userManager, IAIService aiService)
         {
-            return View();
+            _userManager = userManager;
+            _aiService = aiService;
         }
 
         [Authorize]
