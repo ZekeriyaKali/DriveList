@@ -57,10 +57,19 @@ namespace DriveListApi.Controllers
                 PredictedPrice = prediction.PricePrediction
             };
 
-            // 🔹 Giriş yapmış kullanıcıyı al
+            //  Giriş yapmış kullanıcıyı al
             var user = await _userManager.GetUserAsync(User);
 
-            // 🔹 DB’ye kaydet
+            if (user.Credits <= 0)
+            {
+                ModelState.AddModelError("", "Yeterli krediniz yok.");
+                return View(request);
+            }
+
+            //  Kredi düş
+            user.Credits -= 1;
+            await _userManager.UpdateAsync(user);
+            //  DB’ye kaydet
             var history = new PredictionHistory
             {
                 UserId = user?.Id, // Identity'nin string UserId'si
