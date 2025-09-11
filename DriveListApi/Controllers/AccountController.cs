@@ -424,7 +424,9 @@ namespace DriveListApi.Controllers
                 Email = user.Email,
                 TotalPredictions = totalPredictions,
                 TotalDiagnoses = totalDiagnoses,
-                LastLoginTime = user.LastLoginTime
+                LastLoginTime = user.LastLoginTime,
+                Credits = user.Credits
+
             };
 
             return View(model);
