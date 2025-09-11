@@ -8,9 +8,12 @@
         <h3 class="text-center mb-4">🔑 Giriş Yap</h3>
         <form asp-action="Login" method="post">
             <!-- Validation Summary -->
-            <div asp-validation-summary="All" class="alert alert-danger" role="alert">
-                <i class="bi bi-exclamation-triangle-fill"></i> Lütfen formu kontrol edin.
-            </div>
+            @if (!ViewData.ModelState.IsValid && ViewContext.HttpContext.Request.Method == "POST")
+            {
+                <div asp-validation-summary="All" class="alert alert-danger" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill"></i> Lütfen formu kontrol edin.
+                </div>
+            }
             <div class="mb-3">
                 <label asp-for="Username" class="form-label">Kullanıcı Adı</label>
                 <input asp-for="Username" class="form-control" required />
