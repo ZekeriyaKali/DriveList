@@ -72,7 +72,7 @@ namespace DriveListApi.Controllers
                 foreach (var error in result.Errors)
                     ModelState.AddModelError("", error.Description);
             }
-
+            ModelState.Clear();
             return View(model);
         }
 
@@ -199,6 +199,7 @@ namespace DriveListApi.Controllers
             }
 
             ModelState.AddModelError("", "Invalid login attempt.");
+            ModelState.Clear();
             return View(model);
         }
 
