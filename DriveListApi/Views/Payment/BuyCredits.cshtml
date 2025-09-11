@@ -1,0 +1,36 @@
+﻿@{
+    ViewData["Title"] = "Kredi Satın Al";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">💳 Kredi Satın Al</h2>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form asp-action="Process" method="post" class="text-center">
+                <div class="card shadow-sm p-4 mb-3">
+                    <h4>🎁 Paket 1</h4>
+                    <p>10 Kredi - 50₺</p>
+                    <button type="submit" name="packageId" value="1" class="btn btn-primary">Satın Al</button>
+                </div>
+                <div class="card shadow-sm p-4 mb-3">
+                    <h4>🎁 Paket 2</h4>
+                    <p>25 Kredi - 125₺</p>
+                    <button type="submit" name="packageId" value="2" class="btn btn-success">Satın Al</button>
+                </div>
+                <div class="card shadow-sm p-4">
+                    <h4>🎁 Paket 3</h4>
+                    <p>50 Kredi - 250₺</p>
+                    <button type="submit" name="packageId" value="3" class="btn btn-warning">Satın Al</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
