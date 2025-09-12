@@ -12,6 +12,7 @@ namespace DriveListApi.Data
         public DbSet<Prediction> Predictions { get; set; }
         public DbSet<PredictionHistory> PredictionHistories { get; set; }
         public DbSet<LoginAudit> LoginAudits { get; set; }
+        public DbSet<PaymentHistory> PaymentHistories { get; set; }
 
     }
 }
