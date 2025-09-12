@@ -9,9 +9,9 @@ namespace DriveListApi.Controllers
     public class PaymentController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly ApplicationDbContext _context;
+        private readonly AppDbContext _context;
 
-        public PaymentController(UserManager<ApplicationUser> userManager, ApplicationDbContext context)
+        public PaymentController(UserManager<ApplicationUser> userManager, AppDbContext context)
         {
             _userManager = userManager;
             _context = context;
