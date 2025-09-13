@@ -1,16 +1,15 @@
-﻿@{
-    ViewData["Title"] = "Arıza Teşhisi";
-}
-
-<div class="container py-5">
+﻿<div class="container py-5">
     <div class="row justify-content-center">
-        <div class="col-lg-6">
+        <div class="col-lg-8">
             <!-- Başlık -->
             <div class="text-center mb-4">
                 <h2 class="fw-bold text-primary">
                     <i class="bi bi-tools"></i> Arıza Teşhisi
                 </h2>
-                <p class="text-muted">Aracınızdaki sorunu metin, ses veya resim ile bize iletin</p>
+                <p class="text-muted">
+                    Aracınızdaki sorunu <strong>metin</strong>, <strong>ses</strong> veya <strong>resim</strong> ile bize iletin.
+                    Yapay zeka, gönderdiğiniz verilere göre teşhis yapacaktır.
+                </p>
             </div>
 
             <!-- Form Kartı -->
@@ -20,9 +19,10 @@
                         <!-- Metin Alanı -->
                         <div class="mb-3">
                             <label for="description" class="form-label fw-semibold">
-                                <i class="bi bi-pencil-square"></i> Arızayı Açıklayın
+                                <i class="bi bi-pencil-square"></i> Arızayı Açıklayın (Metin)
                             </label>
                             <textarea name="description" class="form-control" rows="3" placeholder="Örn: Motor çalışırken garip ses geliyor..."></textarea>
+                            <small class="text-muted">Arızayı kelimelerle tarif edebilirsiniz.</small>
                         </div>
 
                         <!-- Ses Dosyası -->
@@ -31,6 +31,7 @@
                                 <i class="bi bi-mic-fill text-danger"></i> Ses Dosyası (opsiyonel)
                             </label>
                             <input type="file" name="audio" class="form-control" accept="audio/*" />
+                            <small class="text-muted">Desteklenen formatlar: MP3, WAV. Motor sesini kaydedebilirsiniz.</small>
                         </div>
 
                         <!-- Resim Dosyası -->
@@ -39,12 +40,13 @@
                                 <i class="bi bi-image-fill text-success"></i> Resim (opsiyonel)
                             </label>
                             <input type="file" name="image" class="form-control" accept="image/*" />
+                            <small class="text-muted">Desteklenen formatlar: JPG, PNG. Örn: Kopmuş kablo, sızdıran hortum fotoğrafı.</small>
                         </div>
 
                         <!-- Buton -->
                         <div class="d-grid">
                             <button type="submit" class="btn btn-primary btn-lg shadow-sm">
-                                <i class="bi bi-send-fill"></i> Gönder
+                                <i class="bi bi-send-fill"></i> Gönder ve Analiz Et
                             </button>
                         </div>
                     </form>
@@ -52,18 +54,28 @@
             </div>
 
             <!-- Sonuç Gösterimi -->
-            @if (ViewBag.Result != null)
+            @if (ViewBag.TextResult != null || ViewBag.AudioResult != null || ViewBag.ImageResult != null)
             {
                 <div class="card border-0 shadow-lg mt-4 animate__animated animate__fadeIn">
                     <div class="card-body">
                         <div class="d-flex align-items-center mb-2">
                             <i class="bi bi-clipboard-check-fill text-success fs-3 me-2"></i>
-                            <h5 class="fw-bold mb-0">Teşhis Sonucu</h5>
+                            <h5 class="fw-bold mb-0">Teşhis Sonuçları</h5>
                         </div>
                         <hr />
-                        <p class="mb-0 fs-5 text-secondary">
-                            @ViewBag.Result
-                        </p>
+
+                        @if (ViewBag.TextResult != null)
+                        {
+                            <p class="mb-2"><strong>📝 Metin Analizi:</strong> @ViewBag.TextResult</p>
+                        }
+                        @if (ViewBag.AudioResult != null)
+                        {
+                            <p class="mb-2"><strong>🎤 Ses Analizi:</strong> @ViewBag.AudioResult</p>
+                        }
+                        @if (ViewBag.ImageResult != null)
+                        {
+                            <p class="mb-0"><strong>🖼️ Görsel Analizi:</strong> @ViewBag.ImageResult</p>
+                        }
                     </div>
                 </div>
             }
