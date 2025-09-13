@@ -1,67 +1,96 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Net.Http.Headers;
 using System.Text.Json;
+using System.IO;
 
-namespace DriveListApi.Controllers
+public class DiagnosisController : Controller
 {
-    public class DiagnosisController : Controller
+    private readonly IHttpClientFactory _httpClientFactory;
+    private readonly IWebHostEnvironment _env;
+
+    public DiagnosisController(IHttpClientFactory httpClientFactory, IWebHostEnvironment env)
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        _httpClientFactory = httpClientFactory;
+        _env = env;
+    }
 
-        public DiagnosisController(IHttpClientFactory httpClientFactory)
+    [HttpGet]
+    public IActionResult Create() => View();
+
+    [HttpPost]
+    public async Task<IActionResult> Create(string description, IFormFile? audio, IFormFile? image)
+    {
+        var client = _httpClientFactory.CreateClient();
+
+        using var form = new MultipartFormDataContent();
+        if (!string.IsNullOrEmpty(description))
+            form.Add(new StringContent(description), "description");
+
+        if (audio != null)
         {
-            _httpClientFactory = httpClientFactory;
+            var stream = audio.OpenReadStream();
+            var fileContent = new StreamContent(stream);
+            fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse(audio.ContentType);
+            form.Add(fileContent, "audio", audio.FileName);
         }
 
-        [HttpGet]
-        public IActionResult Create()
+        if (image != null)
         {
-            return View();
+            var stream = image.OpenReadStream();
+            var fileContent = new StreamContent(stream);
+            fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse(image.ContentType);
+            form.Add(fileContent, "image", image.FileName);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Create(string description, IFormFile? audio, IFormFile? image)
+        var response = await client.PostAsync("http://localhost:5001/diagnose", form);
+        var json = await response.Content.ReadAsStringAsync();
+
+        try
         {
-            var client = _httpClientFactory.CreateClient();
+            using var doc = JsonDocument.Parse(json);
+            var root = doc.RootElement;
 
-            using var form = new MultipartFormDataContent();
-            if (!string.IsNullOrEmpty(description))
-                form.Add(new StringContent(description), "description");
-
-            if (audio != null)
+            ViewBag.TextResult = root.GetProperty("text").GetProperty("label").GetString();
+            if (root.TryGetProperty("audio", out var audioEl) && audioEl.ValueKind != JsonValueKind.Null)
             {
-                var stream = audio.OpenReadStream();
-                var fileContent = new StreamContent(stream);
-                fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse(audio.ContentType);
-                form.Add(fileContent, "audio", audio.FileName);
+                ViewBag.AudioLabel = audioEl.GetProperty("label").GetString();
+                ViewBag.AudioAdvice = audioEl.GetProperty("advice").GetString();
+                ViewBag.AudioFile = audioEl.GetProperty("file").GetString();
             }
 
-            if (image != null)
+            if (root.TryGetProperty("image", out var imageEl) && imageEl.ValueKind != JsonValueKind.Null)
             {
-                var stream = image.OpenReadStream();
-                var fileContent = new StreamContent(stream);
-                fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse(image.ContentType);
-                form.Add(fileContent, "image", image.FileName);
+                var dets = imageEl.GetProperty("detections");
+                var list = new List<object>();
+                foreach (var d in dets.EnumerateArray())
+                {
+                    list.Add(new
+                    {
+                        label = d.GetProperty("label").GetString(),
+                        title = d.GetProperty("title").GetString(),
+                        advice = d.GetProperty("advice").GetString()
+                    });
+                }
+                ViewBag.ImageDetections = list;
             }
 
-            // Flask servisine istek atıyoruz
-            var response = await client.PostAsync("http://localhost:5001/diagnose", form);
-            var json = await response.Content.ReadAsStringAsync();
+            if (root.TryGetProperty("annotated_image", out var ann) && ann.ValueKind != JsonValueKind.Null)
+            {
+                var annotatedPath = ann.GetString();
+                // annotatedPath is server-side path on Flask host; if same host, you can serve static or copy to wwwroot.
+                // For simplicity, just pass the path to view
+                ViewBag.AnnotatedImage = annotatedPath;
+            }
 
-            try
-            {
-                // JSON'dan sadece "diagnosis" alanını al
-                var diagnosis = JsonDocument.Parse(json)
-                                          .RootElement
-                                          .GetProperty("diagnosis")
-                                          .GetString();
-                ViewBag.Result = diagnosis;
-            }
-            catch
-            {
-                ViewBag.Result = "Sonuç alınamadı veya geçersiz formatta geldi.";
-            }
-            return View();
+            // final recos
+            var finalRecos = root.GetProperty("final_recommendations");
+            ViewBag.FinalRecommendations = finalRecos.EnumerateArray().Select(x => x.GetString()).ToList();
         }
+        catch
+        {
+            ViewBag.Result = "Sonuç alınamadı veya geçersiz formatta geldi.";
+        }
+
+        return View();
     }
 }
