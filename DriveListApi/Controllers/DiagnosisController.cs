@@ -6,12 +6,10 @@ using System.IO;
 public class DiagnosisController : Controller
 {
     private readonly IHttpClientFactory _httpClientFactory;
-    private readonly IWebHostEnvironment _env;
 
-    public DiagnosisController(IHttpClientFactory httpClientFactory, IWebHostEnvironment env)
+    public DiagnosisController(IHttpClientFactory httpClientFactory)
     {
         _httpClientFactory = httpClientFactory;
-        _env = env;
     }
 
     [HttpGet]
@@ -20,15 +18,16 @@ public class DiagnosisController : Controller
     [HttpPost]
     public async Task<IActionResult> Create(string description, IFormFile? audio, IFormFile? image)
     {
-        var client = _httpClientFactory.CreateClient();
+        var client = _httpClientFactory.CreateClient("DiagnosisApi");
 
         using var form = new MultipartFormDataContent();
+
         if (!string.IsNullOrEmpty(description))
             form.Add(new StringContent(description), "description");
 
         if (audio != null)
         {
-            var stream = audio.OpenReadStream();
+            await using var stream = audio.OpenReadStream();
             var fileContent = new StreamContent(stream);
             fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse(audio.ContentType);
             form.Add(fileContent, "audio", audio.FileName);
@@ -36,13 +35,13 @@ public class DiagnosisController : Controller
 
         if (image != null)
         {
-            var stream = image.OpenReadStream();
+            await using var stream = image.OpenReadStream();
             var fileContent = new StreamContent(stream);
             fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse(image.ContentType);
             form.Add(fileContent, "image", image.FileName);
         }
 
-        var response = await client.PostAsync("http://localhost:5001/diagnose", form);
+        var response = await client.PostAsync("/diagnose", form);
         var json = await response.Content.ReadAsStringAsync();
 
         try
@@ -50,12 +49,14 @@ public class DiagnosisController : Controller
             using var doc = JsonDocument.Parse(json);
             var root = doc.RootElement;
 
-            ViewBag.TextResult = root.GetProperty("text").GetProperty("label").GetString();
+            if (root.TryGetProperty("text", out var textEl))
+                ViewBag.TextResult = textEl.GetProperty("label").GetString();
+
             if (root.TryGetProperty("audio", out var audioEl) && audioEl.ValueKind != JsonValueKind.Null)
             {
-                ViewBag.AudioLabel = audioEl.GetProperty("label").GetString();
-                ViewBag.AudioAdvice = audioEl.GetProperty("advice").GetString();
-                ViewBag.AudioFile = audioEl.GetProperty("file").GetString();
+                var label = audioEl.GetProperty("label").GetString();
+                var advice = audioEl.GetProperty("advice").GetString();
+                ViewBag.AudioResult = $"{label} - {advice}";
             }
 
             if (root.TryGetProperty("image", out var imageEl) && imageEl.ValueKind != JsonValueKind.Null)
@@ -71,20 +72,14 @@ public class DiagnosisController : Controller
                         advice = d.GetProperty("advice").GetString()
                     });
                 }
-                ViewBag.ImageDetections = list;
+                ViewBag.ImageResult = list;
             }
 
             if (root.TryGetProperty("annotated_image", out var ann) && ann.ValueKind != JsonValueKind.Null)
-            {
-                var annotatedPath = ann.GetString();
-                // annotatedPath is server-side path on Flask host; if same host, you can serve static or copy to wwwroot.
-                // For simplicity, just pass the path to view
-                ViewBag.AnnotatedImage = annotatedPath;
-            }
+                ViewBag.AnnotatedImage = ann.GetString();
 
-            // final recos
-            var finalRecos = root.GetProperty("final_recommendations");
-            ViewBag.FinalRecommendations = finalRecos.EnumerateArray().Select(x => x.GetString()).ToList();
+            if (root.TryGetProperty("final_recommendations", out var finalRecos))
+                ViewBag.FinalRecommendations = finalRecos.EnumerateArray().Select(x => x.GetString()).ToList();
         }
         catch
         {
