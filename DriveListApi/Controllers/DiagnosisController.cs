@@ -81,9 +81,9 @@ public class DiagnosisController : Controller
             if (root.TryGetProperty("final_recommendations", out var finalRecos))
                 ViewBag.FinalRecommendations = finalRecos.EnumerateArray().Select(x => x.GetString()).ToList();
         }
-        catch
+        catch (Exception ex)
         {
-            ViewBag.Result = "Sonuç alınamadı veya geçersiz formatta geldi.";
+            ViewBag.Result = $"Sonuç alınamadı: {ex.Message}";
         }
 
         return View();
