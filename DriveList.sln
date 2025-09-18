@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DriveListApi", "DriveListApi\DriveListApi.csproj", "{9C23A2D9-6000-4929-AC2C-530D61200F5C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DriveListApi.Tests", "DriveListApi.Tests\DriveListApi.Tests.csproj", "{E15217A1-3341-44AE-9C5E-AE2C2FDF082E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9C23A2D9-6000-4929-AC2C-530D61200F5C} = {9C23A2D9-6000-4929-AC2C-530D61200F5C}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
