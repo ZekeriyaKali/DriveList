@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DriveListApi.Tests", "Drive
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DriveList.Shared", "DriveList.Shared\DriveList.Shared.csproj", "{17B7F2D1-64FC-43EC-A184-03677B4917F2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DriveList.Application", "DriveList.Application\DriveList.Application.csproj", "{01CD8E53-3CA3-48C2-A329-EE7FB475D527}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,6 +32,10 @@ Global
 		{17B7F2D1-64FC-43EC-A184-03677B4917F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{17B7F2D1-64FC-43EC-A184-03677B4917F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{17B7F2D1-64FC-43EC-A184-03677B4917F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01CD8E53-3CA3-48C2-A329-EE7FB475D527}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01CD8E53-3CA3-48C2-A329-EE7FB475D527}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01CD8E53-3CA3-48C2-A329-EE7FB475D527}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01CD8E53-3CA3-48C2-A329-EE7FB475D527}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
