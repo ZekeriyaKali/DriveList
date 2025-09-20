@@ -1,4 +1,5 @@
-﻿using DriveListApi.Data;                       // Veritabanı context sınıfını (AppDbContext) eklemek için
+﻿using DriveList.Application.Services;
+using DriveListApi.Data;                       // Veritabanı context sınıfını (AppDbContext) eklemek için
 using DriveListApi.Models;                     // ApplicationUser gibi Identity modellerini eklemek için
 using Microsoft.AspNetCore.Authentication.Cookies; // Cookie tabanlı kimlik doğrulama için
 using Microsoft.AspNetCore.Identity;           // ASP.NET Identity sistemi (kullanıcı, roller) için
@@ -43,6 +44,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 // -----------------------------------------------------------
 // 3) Authentication Configuration (Cookie + Google OAuth2)
 // -----------------------------------------------------------
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme; // Default login yöntemi cookie

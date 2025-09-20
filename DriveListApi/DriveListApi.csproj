@@ -28,4 +28,8 @@
     <Folder Include="wwwroot\css\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DriveList.Application\DriveList.Application.csproj" />
+  </ItemGroup>
+
 </Project>
