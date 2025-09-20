@@ -44,7 +44,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 // -----------------------------------------------------------
 // 3) Authentication Configuration (Cookie + Google OAuth2)
 // -----------------------------------------------------------
-
+builder.Services.AddScoped<ICarPredictionService, CarPredictionService>();
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme; // Default login yöntemi cookie
