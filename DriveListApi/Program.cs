@@ -14,9 +14,11 @@ var builder = WebApplication.CreateBuilder(args);
 // -----------------------------------------------------------
 // 1) Database Configuration (EF Core + SQL Server)
 // -----------------------------------------------------------
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+//builder.Services.AddDbContext<AppDbContext>(options =>
+//  options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 // AppDbContext SQL Server kullanacak, bağlantı bilgisi appsettings.json -> "DefaultConnection"
+
+builder.Services.AddInfrastructure(builder.Configuration);
 
 // -----------------------------------------------------------
 // 2) Identity Configuration (Kullanıcı yönetimi + roller)
