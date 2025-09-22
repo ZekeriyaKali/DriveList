@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 
-namespace DriveListApi.Data
+namespace DriveList.Infrastructure.Persistence
 {
     public class AppDbContext:IdentityDbContext<ApplicationUser>
     {
