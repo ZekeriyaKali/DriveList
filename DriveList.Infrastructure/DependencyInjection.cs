@@ -19,7 +19,8 @@ namespace DriveList.Infrastructure
                
             }
                 
-                );.AddEntityFrameworkStores<AppDbContext>();
+                )
+                .AddEntityFrameworkStores<AppDbContext>();
 
             services.AddScoped<IPredictionRepository, PredictionRepository>();
 
