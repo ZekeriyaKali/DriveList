@@ -16,11 +16,14 @@ namespace DriveList.Infrastructure
 
             services.AddIdentity<ApplicationUser, IdentityRole>(options=>
             {
-               
-            }
-                
-                )
-                .AddEntityFrameworkStores<AppDbContext>();
+               options.SignIn.RequireConfirmedAccount = true;
+               options.Password.RequireDigit = true;
+               options.Password.RequireLowercase = true;
+               options.Password.RequiredLength = 8;
+               options.Password.RequireNonAlphanumeric = false;
+            })
+                .AddEntityFrameworkStores<AppDbContext>()
+                .AddDefaultTokenProviders();
 
             services.AddScoped<IPredictionRepository, PredictionRepository>();
 
