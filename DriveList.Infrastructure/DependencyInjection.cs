@@ -1,4 +1,5 @@
-﻿using DriveList.Infrastructure.Persistence;
+﻿using DriveList.Infrastructure.Identity;
+using DriveList.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -13,11 +14,17 @@ namespace DriveList.Infrastructure
             services.AddDbContext<AppDbContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
+            services.AddIdentity<ApplicationUser, IdentityRole>(options=>
+            {
+               
+            }
+                
+                );.AddEntityFrameworkStores<AppDbContext>();
 
             services.AddScoped<IPredictionRepository, PredictionRepository>();
 
             return services;
         }
+
     }
 }
