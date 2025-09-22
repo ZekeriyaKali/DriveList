@@ -16,4 +16,9 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DriveList.Application\DriveList.Application.csproj" />
+    <ProjectReference Include="..\DriveList.Domain\DriveList.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

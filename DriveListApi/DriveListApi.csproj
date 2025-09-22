@@ -30,6 +30,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DriveList.Application\DriveList.Application.csproj" />
+    <ProjectReference Include="..\DriveList.Infrastructure\DriveList.Infrastructure.csproj" />
+    <ProjectReference Include="..\DriveList.Shared\DriveList.Shared.csproj" />
   </ItemGroup>
 
 </Project>

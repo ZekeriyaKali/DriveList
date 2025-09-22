@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DriveList.Domain\DriveList.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
