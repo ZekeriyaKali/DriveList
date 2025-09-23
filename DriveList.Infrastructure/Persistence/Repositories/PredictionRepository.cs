@@ -1,5 +1,5 @@
 ﻿using DriveList.Application.Common.Interfaces;
-using DriveList.Domain;
+using DriveList.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
