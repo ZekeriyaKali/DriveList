@@ -1,4 +1,4 @@
-﻿namespace DriveListApi.Models
+﻿namespace DriveList.Domain.Entities
 {
     public class PredictionHistory
     {
