@@ -1,4 +1,6 @@
-﻿using DriveListApi.Models;
+﻿using DriveList.Domain.Entities;
+using DriveList.Application.Common.Interfaces;
+using DriveList.Application
 using System.Net.Http.Json;
 
 

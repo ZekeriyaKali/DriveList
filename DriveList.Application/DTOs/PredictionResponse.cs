@@ -1,4 +1,4 @@
-﻿namespace DriveListApi.Models
+﻿namespace DriveList.Application.DTOs
 {
     public class PredictionResponse
     {
