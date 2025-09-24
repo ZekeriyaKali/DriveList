@@ -1,4 +1,6 @@
-﻿namespace DriveListApi.Models
+﻿using DriveList.Domain.Entities;
+
+namespace DriveList.Application.DTOs
 {
     public class ProfileViewModel
     {
