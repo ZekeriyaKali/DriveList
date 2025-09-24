@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace DriveList.Shared.Models
 {
     public class Prediction
@@ -18,7 +13,6 @@ namespace DriveList.Shared.Models
         public string City { get; set; }
         public double PredictedPrice { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.Now;
-
         public string UserId { get; set; }
     }
 }
