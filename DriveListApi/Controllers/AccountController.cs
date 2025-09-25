@@ -1,5 +1,6 @@
 ﻿using DriveList.Application.DTOs;
-using DriveListApi.Data;
+using DriveList.Domain.Entities;
+using DriveList.Infrastructure.Persistence;
 using DriveListApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
