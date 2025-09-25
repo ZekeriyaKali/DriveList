@@ -1,7 +1,7 @@
 ﻿using DriveList.Domain.Entities;
 using DriveList.Application.Common.Interfaces;
-using DriveList.Application
 using System.Net.Http.Json;
+using DriveList.Application.DTOs;
 
 
 namespace DriveList.Application.Services
@@ -9,12 +9,12 @@ namespace DriveList.Application.Services
     public class CarPredictionService : ICarPredictionService
     {
         private readonly IHttpClientFactory _httpClientFactory;
-        private readonly AppDbContext _context;
+        private readonly IPredictionRepository _predictionRepository;
 
-        public CarPredictionService(IHttpClientFactory httpClientFactory, AppDbContext context)
+        public CarPredictionService(IHttpClientFactory httpClientFactory, IPredictionRepository predictionRepository)
         {
             _httpClientFactory = httpClientFactory;
-            _context = context;
+            _predictionRepository = predictionRepository;
         }
 
         public async Task<PredictionResponse> PredictAsync(CarRequest request)
