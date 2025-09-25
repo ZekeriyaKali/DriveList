@@ -1,5 +1,5 @@
 ﻿using DriveList.Application.Services;
-using DriveListApi.Data;         // Veritabanı context'i (AppDbContext) için namespace
+using DriveList.Domain.Entities;         // Veritabanı context'i (AppDbContext) için namespace
 using DriveListApi.Models;       // CarRequest, Prediction, PredictionResponse gibi modeller için
 using Microsoft.AspNetCore.Http; // HTTP ile ilgili sınıflar (IFormFile, StatusCodes vs.)
 using Microsoft.AspNetCore.Mvc;  // ControllerBase, IActionResult vb. için gerekli namespace

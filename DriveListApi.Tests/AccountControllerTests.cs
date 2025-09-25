@@ -9,6 +9,7 @@ using DriveListApi.Data;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
+using DriveList.Infrastructure.Persistence;
 
 namespace DriveListApi.Tests
 {
