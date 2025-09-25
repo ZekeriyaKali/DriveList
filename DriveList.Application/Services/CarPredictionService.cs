@@ -43,8 +43,8 @@ namespace DriveList.Application.Services
                 CreatedAt = DateTime.Now
             };
 
-            _context.Predictions.Add(prediction);
-            await _context.SaveChangesAsync();
+            
+            await _predictionRepository.AddAsync(prediction);
 
             return result!;
 
