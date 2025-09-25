@@ -6,7 +6,8 @@ using DriveListApi.Models;                     // ApplicationUser gibi Identity 
 using Microsoft.AspNetCore.Authentication.Cookies; // Cookie tabanlı kimlik doğrulama için
 using Microsoft.AspNetCore.Identity;           // ASP.NET Identity sistemi (kullanıcı, roller) için
 using Microsoft.EntityFrameworkCore;           // EF Core (DbContext, LINQ, migration) için
-using System.Threading.RateLimiting;           // Rate limiting (istek sınırlandırma) middleware’i için
+using System.Threading.RateLimiting;
+using DriveList.Infrastructure.Persistence;           // Rate limiting (istek sınırlandırma) middleware’i için
 
 // -----------------------------------------------------------
 // Web uygulaması builder’ı (DI container, config ve logging dahil)

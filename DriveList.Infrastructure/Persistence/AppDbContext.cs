@@ -1,6 +1,5 @@
 ﻿using DriveList.Domain.Entities;
 using DriveList.Infrastructure.Identity;
-using DriveListApi.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
