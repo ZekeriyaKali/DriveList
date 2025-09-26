@@ -1,5 +1,7 @@
-﻿using DriveList.Infrastructure.Identity;
+﻿using DriveList.Application.Common.Interfaces;
+using DriveList.Infrastructure.Identity;
 using DriveList.Infrastructure.Persistence;
+using DriveList.Infrastructure.Persistence.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
