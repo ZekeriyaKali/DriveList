@@ -1,13 +1,7 @@
 ﻿using DriveList.Application.Services;
 using DriveList.Infrastructure;
-using DriveList.Domain;
-
-using DriveListApi.Models;                     // ApplicationUser gibi Identity modellerini eklemek için
 using Microsoft.AspNetCore.Authentication.Cookies; // Cookie tabanlı kimlik doğrulama için
-using Microsoft.AspNetCore.Identity;           // ASP.NET Identity sistemi (kullanıcı, roller) için
-using Microsoft.EntityFrameworkCore;           // EF Core (DbContext, LINQ, migration) için
 using System.Threading.RateLimiting;
-using DriveList.Infrastructure.Persistence;           // Rate limiting (istek sınırlandırma) middleware’i için
 
 // -----------------------------------------------------------
 // Web uygulaması builder’ı (DI container, config ve logging dahil)
@@ -22,30 +16,6 @@ var builder = WebApplication.CreateBuilder(args);
 // AppDbContext SQL Server kullanacak, bağlantı bilgisi appsettings.json -> "DefaultConnection"
 
 builder.Services.AddInfrastructure(builder.Configuration);
-
-// -----------------------------------------------------------
-// 2) Identity Configuration (Kullanıcı yönetimi + roller)
-// -----------------------------------------------------------
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
-{
-    // ✅ E-posta onayı olmadan giriş yapılamaz
-    options.SignIn.RequireConfirmedAccount = true;
-
-    // 🔐 Parola politikası
-    options.Password.RequireDigit = true;            // en az bir rakam
-    options.Password.RequireLowercase = true;        // küçük harf zorunlu
-    options.Password.RequireUppercase = true;        // büyük harf zorunlu
-    options.Password.RequiredLength = 8;             // minimum 8 karakter
-    options.Password.RequireNonAlphanumeric = false; // özel karakter zorunlu değil
-
-    // 🛡️ Lockout (hesap kitlenmesi)
-    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5); // 5 dakika kitlenir
-    options.Lockout.MaxFailedAccessAttempts = 5; // 5 yanlış denemeden sonra kitlenir
-    options.Lockout.AllowedForNewUsers = true;   // yeni kullanıcılar için de geçerli
-})
-.AddEntityFrameworkStores<AppDbContext>() // Identity kullanıcıları EF Core DB’de saklanır
-.AddDefaultTokenProviders();              // E-posta doğrulama, şifre sıfırlama token sağlayıcıları
-
 // -----------------------------------------------------------
 // 3) Authentication Configuration (Cookie + Google OAuth2)
 // -----------------------------------------------------------
