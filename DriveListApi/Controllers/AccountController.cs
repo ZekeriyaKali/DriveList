@@ -22,6 +22,7 @@ namespace DriveListApi.Controllers
         private readonly IHttpClientFactory _httpClientFactory;
 
         public AccountController(
+            UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             AppDbContext context,
             IConfiguration configuration,
