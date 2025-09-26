@@ -1,15 +1,13 @@
-﻿using Xunit;
+﻿
 using Moq;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Mvc;
 using DriveListApi.Controllers;
 using DriveListApi.Models;
-using DriveListApi.Data;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using System.Collections.Generic;
 using DriveList.Infrastructure.Persistence;
+using DriveList.Domain.Entities;
 
 namespace DriveListApi.Tests
 {

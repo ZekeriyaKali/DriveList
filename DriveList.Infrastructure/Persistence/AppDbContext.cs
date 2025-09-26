@@ -1,5 +1,4 @@
 ﻿using DriveList.Domain.Entities;
-using DriveList.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
