@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestPlatform.TestHost;
 using System.Net.Http.Json;
 
 
-namespace DriveListApi.Tests
+namespace DriveListApi.Tests.Integration
 {
     public class AccountFlowTests : IClassFixture<WebApplicationFactory<Program>>
     {
