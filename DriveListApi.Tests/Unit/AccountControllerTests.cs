@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Http;
 using DriveList.Infrastructure.Persistence;
 using DriveList.Domain.Entities;
 
-namespace DriveListApi.Tests
+namespace DriveListApi.Tests.Unit
 {
     public class AccountControllerTests
     {
@@ -40,7 +40,7 @@ namespace DriveListApi.Tests
         {
             // Arrange
             var userManagerMock = TestHelpers.MockUserManager<ApplicationUser>();
-            var signInManagerMock = TestHelpers.MockSignInManager<ApplicationUser>(userManagerMock);
+            var signInManagerMock = TestHelpers.MockSignInManager(userManagerMock);
             var configMock = new Mock<IConfiguration>();
             var httpClientFactoryMock = new Mock<IHttpClientFactory>();
 
