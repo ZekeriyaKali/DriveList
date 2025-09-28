@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DriveListApi.Tests
+namespace DriveListApi.Tests.Unit
 {
     public class PredictionServiceTests
     {
