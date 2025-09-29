@@ -2,28 +2,59 @@
     ViewData["Title"] = "Anasayfa";
 }
 
-<div class="text-center my-5">
-    <h1 class="display-4 fw-bold">🚗 Drive AI</h1>
-    <p class="lead">Araç fiyat tahmini ve otomobil sorunları için yapay zeka destekli çözüm</p>
+<div class="min-vh-100 d-flex flex-column justify-content-center align-items-center"
+     style="background: linear-gradient(135deg, #f8f9fa, #e3f2fd);">
+
+    <div class="text-center my-5">
+        <h1 class="display-3 fw-bold text-gradient">🚗 Drive AI</h1>
+        <p class="lead text-muted">Araç fiyat tahmini ve otomobil sorunları için yapay zeka destekli çözüm</p>
+    </div>
+
+    <div class="container">
+        <div class="row text-center mt-4">
+            <div class="col-md-6 mb-4">
+                <div class="card shadow-lg border-0 h-100 card-hover">
+                    <div class="card-body p-5">
+                        <h3 class="card-title mb-3">💰 Araç Fiyat Tahmini</h3>
+                        <p class="card-text text-muted">
+                            Aracınızın marka, model, yıl ve km bilgilerini girerek piyasa değerini öğrenin.
+                        </p>
+                        <a asp-controller="CarPrediction" asp-action="Create"
+                           class="btn btn-primary btn-lg px-4 mt-3">Fiyat Tahmini Yap</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-4">
+                <div class="card shadow-lg border-0 h-100 card-hover">
+                    <div class="card-body p-5">
+                        <h3 class="card-title mb-3">🔧 Arıza Teşhisi</h3>
+                        <p class="card-text text-muted">
+                            Yapay zekaya aracınızın sorunlarını anlatın, olası nedenleri öğrenin.
+                        </p>
+                        <a asp-controller="Diagnosis" asp-action="Create"
+                           class="btn btn-outline-secondary btn-lg px-4 mt-3">Arıza Teşhisi</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div class="row text-center mt-5">
-    <div class="col-md-6 mb-4">
-        <div class="card shadow border-0 h-100">
-            <div class="card-body">
-                <h3 class="card-title">💰 Araç Fiyat Tahmini</h3>
-                <p class="card-text">Aracınızın marka, model, yıl ve km bilgilerini girerek piyasa değerini öğrenin.</p>
-                <a asp-controller="CarPrediction" asp-action="Create" class="btn btn-primary">Fiyat Tahmini Yap</a>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-6 mb-4">
-        <div class="card shadow border-0 h-100">
-            <div class="card-body">
-                <h3 class="card-title">🔧 Arıza Teşhisi</h3>
-                <p class="card-text">Yapay zekaya aracınızın sorunlarını anlatın, olası nedenleri öğrenin.</p>
-                <a asp-controller="Diagnosis" asp-action="Create" class="btn btn-outline-secondary">Arıza Teşhisi</a>
-            </div>
-        </div>
-    </div>
-</div>
+<style>
+    /* Başlık için gradient */
+    .text-gradient {
+        background: linear-gradient(90deg, #007bff, #6610f2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    /* Kart hover efekti */
+    .card-hover {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .card-hover:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 1rem 2rem rgba(0,0,0,0.15);
+    }
+</style>
