@@ -4,36 +4,51 @@
 }
 
 <div class="d-flex justify-content-center align-items-center vh-100">
-    <div class="card shadow-lg border-0 rounded-4 p-4" style="max-width: 700px; width: 100%;">
-        <div class="card-header bg-dark text-white text-center py-4 rounded-top-4">
-            <h2 class="mb-0">🚗 Araç Fiyat Tahmini</h2>
+    <div class="card shadow-lg border-0 rounded-4 p-4" style="max-width: 750px; width: 100%;">
+        <div class="card-header text-white text-center py-4 rounded-top-4 gradient-header">
+            <h2 class="mb-0 fw-bold">🚗 Araç Fiyat Tahmini</h2>
             <small class="text-light">Lütfen bilgileri eksiksiz giriniz</small>
         </div>
         <div class="card-body">
             <form method="post" id="carForm">
                 <div class="row g-4">
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">Marka</label>
-                        <input asp-for="Brand" class="form-control form-control-lg rounded-3" placeholder="Örn: Toyota" required />
+                        <label class="form-label fw-semibold">Marka</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light"><i class="bi bi-car-front"></i></span>
+                            <input asp-for="Brand" class="form-control form-control-lg rounded-end-3" placeholder="Örn: Toyota" required />
+                        </div>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">Model</label>
-                        <input asp-for="Model" class="form-control form-control-lg rounded-3" placeholder="Örn: Corolla" required />
+                        <label class="form-label fw-semibold">Model</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light"><i class="bi bi-ui-radios"></i></span>
+                            <input asp-for="Model" class="form-control form-control-lg rounded-end-3" placeholder="Örn: Corolla" required />
+                        </div>
                     </div>
                     <div class="col-md-4">
-                        <label class="form-label fw-bold">Yıl</label>
-                        <input asp-for="Year" class="form-control form-control-lg rounded-3" type="number" min="1980" max="2025" required />
+                        <label class="form-label fw-semibold">Yıl</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light"><i class="bi bi-calendar-event"></i></span>
+                            <input asp-for="Year" class="form-control form-control-lg rounded-end-3" type="number" min="1980" max="2025" required />
+                        </div>
                     </div>
                     <div class="col-md-4">
-                        <label class="form-label fw-bold">Kilometre</label>
-                        <input asp-for="Km" class="form-control form-control-lg rounded-3" type="number" placeholder="90000" required />
+                        <label class="form-label fw-semibold">Kilometre</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light"><i class="bi bi-speedometer2"></i></span>
+                            <input asp-for="Km" class="form-control form-control-lg rounded-end-3" type="number" placeholder="90000" required />
+                        </div>
                     </div>
                     <div class="col-md-4">
-                        <label class="form-label fw-bold">Şehir</label>
-                        <input asp-for="City" class="form-control form-control-lg rounded-3" placeholder="Örn: Ankara" required />
+                        <label class="form-label fw-semibold">Şehir</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light"><i class="bi bi-geo-alt"></i></span>
+                            <input asp-for="City" class="form-control form-control-lg rounded-end-3" placeholder="Örn: Ankara" required />
+                        </div>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">Vites Tipi</label>
+                        <label class="form-label fw-semibold">Vites Tipi</label>
                         <select asp-for="GearType" class="form-select form-select-lg rounded-3" required>
                             <option value="">Seçiniz...</option>
                             <option>Manuel</option>
@@ -41,7 +56,7 @@
                         </select>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">Yakıt Tipi</label>
+                        <label class="form-label fw-semibold">Yakıt Tipi</label>
                         <select asp-for="FuelType" class="form-select form-select-lg rounded-3" required>
                             <option value="">Seçiniz...</option>
                             <option>Benzin</option>
@@ -53,7 +68,7 @@
                 </div>
 
                 <div class="d-grid mt-5">
-                    <button type="submit" class="btn btn-lg btn-primary rounded-3 shadow-sm">
+                    <button type="submit" class="btn btn-lg btn-gradient rounded-3 shadow">
                         🚀 Tahmin Et
                     </button>
                 </div>
@@ -74,20 +89,35 @@
 
     <style>
         body {
-            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            background: linear-gradient(135deg, #e0eafc, #cfdef3);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
+        .gradient-header {
+            background: linear-gradient(90deg, #0d6efd, #6610f2);
+        }
+
+        .btn-gradient {
+            background: linear-gradient(90deg, #0d6efd, #6610f2);
+            color: #fff;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s;
+        }
+
+            .btn-gradient:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+            }
+
         .card {
-            transition: transform 0.2s ease-in-out;
+            transition: transform 0.25s ease-in-out;
         }
 
             .card:hover {
-                transform: translateY(-5px);
+                transform: translateY(-6px);
             }
 
         label {
-            font-size: 1.1rem;
+            font-size: 1rem;
             color: #495057;
         }
     </style>
