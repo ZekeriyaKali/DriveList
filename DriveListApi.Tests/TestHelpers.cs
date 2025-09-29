@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using DriveList.Domain.Entities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Moq;
 
@@ -7,32 +8,28 @@ namespace DriveListApi.Tests
     public static class TestHelpers
     {
         // Sahte UserManager üretir
-        public static Mock<UserManager<TUser>> MockUserManager<TUser>() where TUser : class
+        public static ApplicationUser CreateTestUser(string username = "user")
         {
-            var store = new Mock<IUserStore<TUser>>();
-            return new Mock<UserManager<TUser>>(
-                store.Object,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null
-            );
+            return new ApplicationUser
+            {
+                UserName = username,
+                Email = $"{username}@test.com",
+                Credits = 10
+            };
         }
 
-        // Sahte SignInManager üretir
-        public static Mock<SignInManager<TUser>> MockSignInManager<TUser>(
-            Mock<UserManager<TUser>> userManager) where TUser : class
+        public static CarRequest CreateTestCarRequest()
         {
-            return new Mock<SignInManager<TUser>>(
-                userManager.Object,
-                new Mock<IHttpContextAccessor>().Object,
-                new Mock<IUserClaimsPrincipalFactory<TUser>>().Object,
-                null, null, null, null
-            );
+            return new CarRequest
+            {
+                Brand = "BMW",
+                Model = "320i",
+                Year = 2018,
+                Km = 20000,
+                FuelType = "Benzin",
+                GearType = "Otomatik",
+                City = "İstanbul"
+            };
         }
     }
 }
