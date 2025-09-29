@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Moq;
 
-namespace DriveListApi.Tests
+namespace DriveListApi.Tests.Helpers
 {
     public static class TestHelpers
     {

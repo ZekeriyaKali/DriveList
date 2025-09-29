@@ -8,6 +8,7 @@ using DriveListApi.Models;
 using Microsoft.AspNetCore.Http;
 using DriveList.Infrastructure.Persistence;
 using DriveList.Domain.Entities;
+using DriveListApi.Tests.Helpers;
 
 namespace DriveListApi.Tests.Unit
 {
