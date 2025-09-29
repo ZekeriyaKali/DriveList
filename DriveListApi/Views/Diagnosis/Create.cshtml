@@ -2,107 +2,131 @@
     ViewData["Title"] = "Arıza Teşhisi";
 }
 
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-lg-8">
-            <!-- Başlık -->
-            <div class="text-center mb-4">
-                <h2 class="fw-bold text-primary">
-                    <i class="bi bi-tools"></i> Arıza Teşhisi
-                </h2>
-                <p class="text-muted">
-                    Aracınızdaki sorunu <strong>metin</strong>, <strong>ses</strong> veya <strong>resim</strong> ile bize iletin.
-                    Yapay zeka, gönderdiğiniz verilere göre teşhis yapacaktır.
-                </p>
-            </div>
-
-            <!-- Form Kartı -->
-            <div class="card shadow-lg border-0 rounded-3">
-                <div class="card-body p-4">
-                    <form asp-action="Create" asp-controller="Diagnosis" method="post" enctype="multipart/form-data">
-                        <!-- Metin Alanı -->
-                        <div class="mb-3">
-                            <label for="description" class="form-label fw-semibold">
-                                <i class="bi bi-pencil-square"></i> Arızayı Açıklayın (Metin)
-                            </label>
-                            <textarea name="description" class="form-control" rows="3" placeholder="Örn: Motor çalışırken garip ses geliyor..."></textarea>
-                            <small class="text-muted">Arızayı kelimelerle tarif edebilirsiniz.</small>
-                        </div>
-
-                        <!-- Ses Dosyası -->
-                        <div class="mb-3">
-                            <label for="audio" class="form-label fw-semibold">
-                                <i class="bi bi-mic-fill text-danger"></i> Ses Dosyası (opsiyonel)
-                            </label>
-                            <input type="file" name="audio" class="form-control" accept="audio/*" />
-                            <small class="text-muted">Desteklenen formatlar: MP3, WAV. Motor sesini kaydedebilirsiniz.</small>
-                        </div>
-
-                        <!-- Resim Dosyası -->
-                        <div class="mb-3">
-                            <label for="image" class="form-label fw-semibold">
-                                <i class="bi bi-image-fill text-success"></i> Resim (opsiyonel)
-                            </label>
-                            <input type="file" name="image" class="form-control" accept="image/*" />
-                            <small class="text-muted">Desteklenen formatlar: JPG, PNG. Örn: Kopmuş kablo, sızdıran hortum fotoğrafı.</small>
-                        </div>
-
-                        <!-- Buton -->
-                        <div class="d-grid">
-                            <button type="submit" class="btn btn-primary btn-lg shadow-sm">
-                                <i class="bi bi-send-fill"></i> Gönder ve Analiz Et
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            <!-- Sonuç Gösterimi -->
-            @if (ViewBag.TextResult != null || ViewBag.AudioResult != null || ViewBag.ImageResult != null || ViewBag.FinalRecommendations != null)
-            {
-                <div class="card border-0 shadow-lg mt-4 animate__animated animate__fadeIn">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center mb-2">
-                            <i class="bi bi-clipboard-check-fill text-success fs-3 me-2"></i>
-                            <h5 class="fw-bold mb-0">Teşhis Sonuçları</h5>
-                        </div>
-                        <hr />
-
-                        @if (ViewBag.TextResult != null)
-                        {
-                            <p class="mb-2"><strong>📝 Metin Analizi:</strong> @ViewBag.TextResult</p>
-                        }
-                        @if (ViewBag.AudioResult != null)
-                        {
-                            <p class="mb-2"><strong>🎤 Ses Analizi:</strong> @ViewBag.AudioResult</p>
-                        }
-                        @if (ViewBag.ImageResult != null)
-                        {
-                            <p class="mb-0"><strong>🖼️ Görsel Analizi:</strong></p>
-                            <ul>
-                                @foreach (var det in ViewBag.ImageResult)
-                                {
-                                    <li>@det.label - @det.title (@det.advice)</li>
-                                }
-                            </ul>
-                        }
-                        @if (ViewBag.AnnotatedImage != null)
-                        {
-                            <img src="@ViewBag.AnnotatedImage" class="img-fluid rounded mt-3" alt="Analiz edilmiş görsel" />
-                        }
-                        @if (ViewBag.FinalRecommendations != null)
-                        {
-                            <h6 class="fw-bold mt-3">🔧 Öneriler:</h6>
-                            <ul>
-                                @foreach (var rec in ViewBag.FinalRecommendations)
-                                {
-                                    <li>@rec</li>
-                                }
-                            </ul>
-                        }
-                    </div>
-                </div>
-            }
+<div class="d-flex justify-content-center align-items-center py-5" style="min-height: 100vh;">
+    <div class="card shadow-lg border-0 rounded-4 p-4" style="max-width: 800px; width: 100%;">
+        <!-- Başlık -->
+        <div class="card-header text-white text-center py-4 rounded-top-4 gradient-header">
+            <h2 class="mb-0 fw-bold"><i class="bi bi-tools"></i> Arıza Teşhisi</h2>
+            <small class="text-light">Metin, ses veya resim ile aracınızdaki sorunu iletin</small>
         </div>
+
+        <!-- Form -->
+        <div class="card-body">
+            <form asp-action="Create" asp-controller="Diagnosis" method="post" enctype="multipart/form-data" id="diagnosisForm">
+                <!-- Metin Alanı -->
+                <div class="mb-4">
+                    <label for="description" class="form-label fw-semibold">
+                        <i class="bi bi-pencil-square"></i> Arızayı Açıklayın (Metin)
+                    </label>
+                    <textarea name="description" class="form-control rounded-3" rows="3" placeholder="Örn: Motor çalışırken garip ses geliyor..."></textarea>
+                    <small class="text-muted">Arızayı kelimelerle tarif edebilirsiniz.</small>
+                </div>
+
+                <!-- Ses Dosyası -->
+                <div class="mb-4">
+                    <label for="audio" class="form-label fw-semibold">
+                        <i class="bi bi-mic-fill text-danger"></i> Ses Dosyası (opsiyonel)
+                    </label>
+                    <input type="file" name="audio" class="form-control rounded-3" accept="audio/*" />
+                    <small class="text-muted">Desteklenen formatlar: MP3, WAV.</small>
+                </div>
+
+                <!-- Resim Dosyası -->
+                <div class="mb-4">
+                    <label for="image" class="form-label fw-semibold">
+                        <i class="bi bi-image-fill text-success"></i> Resim (opsiyonel)
+                    </label>
+                    <input type="file" name="image" class="form-control rounded-3" accept="image/*" />
+                    <small class="text-muted">Desteklenen formatlar: JPG, PNG.</small>
+                </div>
+
+                <!-- Buton -->
+                <div class="d-grid mt-5">
+                    <button type="submit" class="btn btn-lg btn-gradient rounded-3 shadow">
+                        <i class="bi bi-send-fill"></i> Gönder ve Analiz Et
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Sonuç Gösterimi -->
+        @if (ViewBag.TextResult != null || ViewBag.AudioResult != null || ViewBag.ImageResult != null || ViewBag.FinalRecommendations != null)
+        {
+            <div class="card border-0 shadow-lg mt-4 animate__animated animate__fadeIn rounded-4">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="bi bi-clipboard-check-fill text-success fs-3 me-2"></i>
+                        <h5 class="fw-bold mb-0">Teşhis Sonuçları</h5>
+                    </div>
+                    <hr />
+
+                    @if (ViewBag.TextResult != null)
+                    {
+                        <p><span class="badge bg-primary">📝 Metin</span> @ViewBag.TextResult</p>
+                    }
+                    @if (ViewBag.AudioResult != null)
+                    {
+                        <p><span class="badge bg-danger">🎤 Ses</span> @ViewBag.AudioResult</p>
+                    }
+                    @if (ViewBag.ImageResult != null)
+                    {
+                        <p><span class="badge bg-success">🖼️ Görsel</span></p>
+                        <ul>
+                            @foreach (var det in ViewBag.ImageResult)
+                            {
+                                <li>@det.label - @det.title (@det.advice)</li>
+                            }
+                        </ul>
+                    }
+                    @if (ViewBag.AnnotatedImage != null)
+                    {
+                        <img src="@ViewBag.AnnotatedImage" class="img-fluid rounded mt-3 shadow" alt="Analiz edilmiş görsel" />
+                    }
+                    @if (ViewBag.FinalRecommendations != null)
+                    {
+                        <h6 class="fw-bold mt-4">🔧 Öneriler:</h6>
+                        <ul>
+                            @foreach (var rec in ViewBag.FinalRecommendations)
+                            {
+                                <li>@rec</li>
+                            }
+                        </ul>
+                    }
+                </div>
+            </div>
+        }
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        // Submit animasyonu
+        document.getElementById("diagnosisForm").addEventListener("submit", function (e) {
+            const btn = e.target.querySelector("button[type='submit']");
+            btn.disabled = true;
+            btn.innerHTML = "⏳ Analiz Ediliyor...";
+        });
+    </script>
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #f6f9fc, #e9ecef);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .gradient-header {
+            background: linear-gradient(90deg, #198754, #20c997);
+        }
+
+        .btn-gradient {
+            background: linear-gradient(90deg, #198754, #20c997);
+            color: #fff;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s;
+        }
+
+            .btn-gradient:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+            }
+    </style>
+}
