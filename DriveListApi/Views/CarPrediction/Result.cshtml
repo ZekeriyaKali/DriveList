@@ -1,45 +1,47 @@
-﻿@{
+﻿@model PredictionViewModel
+@{
     ViewData["Title"] = "Tahmin Sonucu";
 }
 
-@model PredictionViewModel
+<div class="d-flex justify-content-center align-items-center vh-100">
+    <div class="card shadow-lg border-0 rounded-4 w-100" style="max-width: 650px;">
 
-<div class="container my-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
+        <!-- Header -->
+        <div class="card-header bg-dark text-white text-center py-3 rounded-top-4">
+            <h3 class="mb-0">🚗 Tahmin Sonucu</h3>
+        </div>
 
-            <!-- Tahmin Kartı -->
-            <div class="card shadow-lg border-0 rounded-3">
-                <div class="card-header bg-dark text-white text-center py-3 rounded-top">
-                    <h3 class="mb-0">🚗 Tahmin Sonucu</h3>
-                </div>
-                <div class="card-body p-4">
+        <!-- Body -->
+        <div class="card-body p-4">
+            <!-- Girilen Bilgiler -->
+            <h5 class="text-muted mb-3">Girilen Bilgiler</h5>
+            <ul class="list-group mb-4">
+                <li class="list-group-item"><strong>Marka:</strong> @Model.Brand</li>
+                <li class="list-group-item"><strong>Model:</strong> @Model.Model</li>
+                <li class="list-group-item"><strong>Yıl:</strong> @Model.Year</li>
+                <li class="list-group-item"><strong>Kilometre:</strong> @String.Format("{0:N0}", Model.Km) km</li>
+                <li class="list-group-item"><strong>Vites:</strong> @Model.GearType</li>
+                <li class="list-group-item"><strong>Yakıt:</strong> @Model.FuelType</li>
+                <li class="list-group-item"><strong>Şehir:</strong> @Model.City</li>
+            </ul>
 
-                    <!-- Girilen Bilgiler -->
-                    <h5 class="text-muted mb-3">Girilen Bilgiler</h5>
-                    <ul class="list-group mb-4">
-                        <li class="list-group-item"><strong>Marka:</strong> @Model.Brand</li>
-                        <li class="list-group-item"><strong>Model:</strong> @Model.Model</li>
-                        <li class="list-group-item"><strong>Yıl:</strong> @Model.Year</li>
-                        <li class="list-group-item"><strong>Kilometre:</strong> @Model.Km</li>
-                        <li class="list-group-item"><strong>Vites:</strong> @Model.GearType</li>
-                        <li class="list-group-item"><strong>Yakıt:</strong> @Model.FuelType</li>
-                        <li class="list-group-item"><strong>Şehir:</strong> @Model.City</li>
-                    </ul>
-
-                    <!-- Tahmin -->
-                    <div class="alert alert-success text-center fs-5 shadow-sm">
-                        <strong>@Model.Brand @Model.Model</strong> Aracınızın Tahmini Piyasa Fiyatı:
-                        <span class="fw-bold text-dark">@String.Format("{0:N0}", Model.PredictedPrice) ₺</span>
-                    </div>
-                </div>
-
-                <!-- Footer -->
-                <div class="card-footer text-center text-muted">
-                    <small>Bu sonuç makine öğrenmesi modeli kullanılarak hesaplanmıştır.</small>
-                </div>
+            <!-- Tahmin -->
+            <div class="alert alert-success text-center fs-5 shadow-sm mb-0">
+                <strong>@Model.Brand @Model.Model</strong> aracınızın tahmini piyasa fiyatı:
+                <span class="fw-bold text-dark">@String.Format("{0:N0}", Model.PredictedPrice) ₺</span>
             </div>
+        </div>
 
+        <!-- Footer -->
+        <div class="card-footer text-center text-muted rounded-bottom-4">
+            <small>🔎 Bu sonuç makine öğrenmesi modeli kullanılarak hesaplanmıştır.</small>
         </div>
     </div>
 </div>
+
+<style>
+    .list-group-item {
+        border: none;
+        padding-left: 0;
+    }
+</style>
