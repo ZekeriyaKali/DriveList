@@ -88,7 +88,13 @@ builder.Services.ConfigureApplicationCookie(options =>
 // 6) MVC + Razor + HttpClient + Session Servisleri
 // -----------------------------------------------------------
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation(); // Razor hot reload
-builder.Services.AddHttpClient();  // Flask API çağrısı için HttpClient
+builder.Services.AddHttpClient("DiagnosisApi", client =>
+{
+    client.BaseAddress = new Uri("http://localhost:5000"); // Flask API adresin
+    client.Timeout = TimeSpan.FromSeconds(60);             // İsteğin zaman aşımı
+    client.DefaultRequestHeaders.Accept.Clear();
+    client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+});
 builder.Services.AddControllers(); // API controller desteği
 builder.Services.AddControllersWithViews(); // MVC controller + view desteği
 
