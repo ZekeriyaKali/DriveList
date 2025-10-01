@@ -90,7 +90,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation(); // Razor hot reload
 builder.Services.AddHttpClient("DiagnosisApi", client =>
 {
-    client.BaseAddress = new Uri("http://localhost:5000"); // Flask API adresin
+    client.BaseAddress = new Uri("http://127.0.0.1:5001"); // Flask API adresin // Flask API adresin
     client.Timeout = TimeSpan.FromSeconds(60);             // İsteğin zaman aşımı
     client.DefaultRequestHeaders.Accept.Clear();
     client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
