@@ -48,6 +48,12 @@
                 </div>
             </form>
         </div>
+        @if (ViewBag.Result != null)
+        {
+            <div class="alert alert-danger mt-3">
+                @ViewBag.Result
+            </div>
+        }
 
         <!-- Sonuç Gösterimi -->
         @if (ViewBag.TextResult != null || ViewBag.AudioResult != null || ViewBag.ImageResult != null || ViewBag.FinalRecommendations != null)
