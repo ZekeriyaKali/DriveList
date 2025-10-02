@@ -67,7 +67,7 @@ namespace DriveList.Infrastructure
 
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<ISmsSender, SmsSender>();
-
+            services.AddScoped<IFileStorageService, LocalFileStorageService>();
             services.AddScoped<IPredictionRepository, PredictionRepository>();
 
 
