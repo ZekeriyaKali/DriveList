@@ -36,6 +36,15 @@ namespace DriveList.Infrastructure
             services.AddLogging(loggingBuilder =>
     loggingBuilder.AddSerilog(dispose: true));
 
+            services.AddMemoryCache();
+
+            // Eğer Redis kullanacaksan:
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = configuration.GetConnectionString("Redis");
+                options.InstanceName = "DriveList_";
+            });
+
             services.AddScoped<IPredictionRepository, PredictionRepository>();
 
 
