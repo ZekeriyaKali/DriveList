@@ -49,6 +49,9 @@ namespace DriveList.Infrastructure
     x.UseSqlServerStorage(configuration.GetConnectionString("DefaultConnection")));
             services.AddHangfireServer();
 
+            services.AddTransient<IEmailSender, EmailSender>();
+            services.AddTransient<ISmsSender, SmsSender>();
+
             services.AddScoped<IPredictionRepository, PredictionRepository>();
 
 
