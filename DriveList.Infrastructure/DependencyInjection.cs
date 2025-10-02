@@ -45,6 +45,10 @@ namespace DriveList.Infrastructure
                 options.InstanceName = "DriveList_";
             });
 
+            services.AddHangfire(x =>
+    x.UseSqlServerStorage(configuration.GetConnectionString("DefaultConnection")));
+            services.AddHangfireServer();
+
             services.AddScoped<IPredictionRepository, PredictionRepository>();
 
 
