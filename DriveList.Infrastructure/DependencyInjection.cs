@@ -27,7 +27,14 @@ namespace DriveList.Infrastructure
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
 
+            services.AddDbContext<AppDbContext>(options =>
+            options.UseSqlServer(
+                configuration.GetConnectionString("DefaultConnection"),
+                sqlOptions => sqlOptions.EnableRetryOnFailure()
+            ));
+
             services.AddScoped<IPredictionRepository, PredictionRepository>();
+
 
             return services;
         }
