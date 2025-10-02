@@ -33,6 +33,9 @@ namespace DriveList.Infrastructure
                 sqlOptions => sqlOptions.EnableRetryOnFailure()
             ));
 
+            services.AddLogging(loggingBuilder =>
+    loggingBuilder.AddSerilog(dispose: true));
+
             services.AddScoped<IPredictionRepository, PredictionRepository>();
 
 
