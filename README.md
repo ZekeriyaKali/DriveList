@@ -90,7 +90,7 @@ The project follows a clean layered architecture:
   "fuelType": "Diesel",
   "city": "Istanbul"
 }
-
+```
 ---
 
 Security
