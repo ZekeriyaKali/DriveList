@@ -91,6 +91,8 @@ The project follows a clean layered architecture:
   "city": "Istanbul"
 }
 
+---
+
 Security
 reCAPTCHA validation during registration
 Login rate limiting
@@ -102,9 +104,13 @@ Credit System
 Each prediction consumes 1 credit
 Users can purchase credits (mock implementation)
 All transactions are stored in the database
-Project Status
 
+---
+
+Project Status
 This project is currently under active development.
+
+---
 
 Planned improvements:
 
@@ -114,6 +120,8 @@ Docker support
 Cloud deployment (Azure or AWS)
 Mobile client (Flutter)
 Advanced analytics dashboard
+
+
 Setup
 Clone the repository
 
@@ -130,6 +138,8 @@ dotnet run
 Run Python API
 
 python app.py
+
+---
 
 Notes
 Python API runs on localhost:5000
