@@ -93,7 +93,7 @@ The project follows a clean layered architecture:
 ```
 ---
 
-Security
+##Security
 reCAPTCHA validation during registration
 Login rate limiting
 Account lockout mechanism
@@ -107,12 +107,12 @@ All transactions are stored in the database
 
 ---
 
-Project Status
+##Project Status
 This project is currently under active development.
 
 ---
 
-Planned improvements:
+##Planned improvements:
 
 Integration with real payment providers (Stripe or Iyzico)
 Improved machine learning model accuracy
@@ -122,21 +122,17 @@ Mobile client (Flutter)
 Advanced analytics dashboard
 
 
-Setup
+##Setup
 Clone the repository
-
 git clone https://github.com/yourusername/VehicleAdvertAI.git
 
 Configure database
-
 Update appsettings.json and run migrations
 
 Run .NET project
-
 dotnet run
 
 Run Python API
-
 python app.py
 
 ---
