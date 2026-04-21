@@ -114,12 +114,12 @@ This project is currently under active development.
 
 ## Planned improvements
 
--Integration with real payment providers (Stripe or Iyzico)
--Improved machine learning model accuracy
--Docker support
--Cloud deployment (Azure or AWS)
--Mobile client (Flutter)
--Advanced analytics dashboard
+- Integration with real payment providers (Stripe or Iyzico)
+- Improved machine learning model accuracy
+- Docker support
+- Cloud deployment (Azure or AWS)
+- Mobile client (Flutter)
+- Advanced analytics dashboard
 
 
 ## Setup
@@ -138,6 +138,6 @@ python app.py
 ---
 
 ## Notes
-Python API runs on localhost:5000
-.NET communicates with Python via HTTP requests
-Both services must be running at the same time
+- Python API runs on localhost:5000
+- .NET communicates with Python via HTTP requests
+- Both services must be running at the same time
