@@ -94,16 +94,16 @@ The project follows a clean layered architecture:
 ---
 
 ## Security
-reCAPTCHA validation during registration
-Login rate limiting
-Account lockout mechanism
-Email verification requirement
-Two-factor authentication
-Login audit tracking
-Credit System
-Each prediction consumes 1 credit
-Users can purchase credits (mock implementation)
-All transactions are stored in the database
+- reCAPTCHA validation during registration
+- Login rate limiting
+- Account lockout mechanism
+- Email verification requirement
+- Two-factor authentication
+- Login audit tracking
+- Credit System
+- Each prediction consumes 1 credit
+- Users can purchase credits (mock implementation)
+- All transactions are stored in the database
 
 ---
 
@@ -114,12 +114,12 @@ This project is currently under active development.
 
 ## Planned improvements
 
-Integration with real payment providers (Stripe or Iyzico)
-Improved machine learning model accuracy
-Docker support
-Cloud deployment (Azure or AWS)
-Mobile client (Flutter)
-Advanced analytics dashboard
+-Integration with real payment providers (Stripe or Iyzico)
+-Improved machine learning model accuracy
+-Docker support
+-Cloud deployment (Azure or AWS)
+-Mobile client (Flutter)
+-Advanced analytics dashboard
 
 
 ## Setup
